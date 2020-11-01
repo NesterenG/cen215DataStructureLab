@@ -232,8 +232,149 @@ void bubblesortname(char arr[], int size)
 } 
 
 ///////////////////////////////////////////////
+
+//Quick Sort
+int partitionnum(int num[], int low, int high)
+{
+
+    char pivot = num[high];
+
+    int i = low - 1;
+
+    for (int j = low; j < high; j++)
+    {
+        if (num[j] < pivot)
+        {
+            i++;
+            swapnum(&num[i], &num[j]);
+        }
+    }
+
+    swapnum(&num[i + 1], &num[high]);
+    return i + 1;
+}
+
+void quicksortnum(int num[], int low, int high)
+{
+    int pivot;
+    if (low < high)
+    {
+        pivot = partitionnum(num, low, high);
+        quicksortnum(num, low, pivot - 1);
+        quicksortnum(num, pivot + 1, high);
+    }
+}
+
+int partitionname(char name[], int low, int high)
+{
+
+    int pivot = name[high];
+
+    int i = low - 1;
+
+    for (int j = low; j < high; j++)
+    {
+        if (name[j] < pivot)
+        {
+            i++;
+            swapname(&name[i], &name[j]);
+        }
+    }
+
+    swapname(&name[i + 1], &name[high]);
+    return i + 1;
+}
+
+void quicksortname(char name[], int low, int high)
+{
+    int pivot;
+    if (low < high)
+    {
+        pivot = partitionname(name, low, high);
+        quicksortname(name, low, pivot - 1);
+        quicksortname(name, pivot + 1, high);
+    }
+}
+//////////////////////////////////////
+
+//Heap Sort
+void heapifynum(int num[], int size, int root)
+{
+
+    int largest = root;
+    int left = 2 * root + 1;
+    int right = 2 * root + 2;
+
+    if (size > left && num[left] > num[largest])
+        largest = left;
+    if (size > right && num[right] > num[largest])
+        largest = right;
+
+    if (largest != root)
+    {
+        swapnum(&num[largest], &num[root]);
+
+        heapifynum(num, size, largest);
+    }
+}
+
+void heapsortnum(int num[], int size)
+{
+
+    for (int i = size / 2 - 1; i >= 0; i--)
+    {
+        heapifynum(num, size, i);
+    }
+
+    for (int i = size - 1; i > 0; i--)
+    {
+        swapnum(&num[0], &num[i]);
+
+        heapifynum(num, i, 0);
+    }
+}
+
+
+void heapifyname(char name[], int size, int root)
+{
+
+    int largest = root;
+    int left = 2 * root + 1;
+    int right = 2 * root + 2;
+
+    if (size > left && name[left] > name[largest])
+        largest = left;
+    if (size > right && name[right] > name[largest])
+        largest = right;
+
+    if (largest != root)
+    {
+        swapname(&name[largest], &name[root]);
+
+        heapifyname(name, size, largest);
+    }
+}
+
+void heapsortname(char name[], int size)
+{
+
+    for (int i = size / 2 - 1; i >= 0; i--)
+    {
+        heapifyname(name, size, i);
+    }
+
+    for (int i = size - 1; i > 0; i--)
+    {
+        swapname(&name[0], &name[i]);
+
+        heapifyname(name, i, 0);
+    }
+}
+//////////////////////////////////////
+
+
 int main() {
-  clock_t i,in,s,sn,m,mn,b,bn;
+  clock_t i,in,s,sn,m,mn,b,bn,q,qn,h,hn;
 
   //Insertion Sort
   int num[] = {2,0,1,9,5,5,5,0,5,8};
@@ -305,6 +446,42 @@ int main() {
   bn=clock()-bn;
   printf("%s\n",name3);
   printf("name's function duration %f\n",((float)bn)/CLOCKS_PER_SEC);
+  ///////////////////////////////////////
+
+  //Quick Sort
+  int num4[] = {2,0,1,9,5,5,5,0,5,8};
+  int size4 = sizeof(num4) / sizeof(num4[0]);
+  char name4[] = "anil onal";
+  int sizec4 = strlen(name4);
+  printf("\n\t\tQuick Sort\n");
+  q=clock();
+  quicksortnum(num4,0,size4-1);
+  q=clock()-q;
+  printarraynum(num4,size4);
+  printf("number's function duration %f\n",((float)q)/CLOCKS_PER_SEC);
+  qn=clock();
+  quicksortname(name4,0,sizec4-1);
+  qn=clock()-qn;
+  printf("%s\n",name4);
+  printf("name's function duration %f\n",((float)qn)/CLOCKS_PER_SEC);
+  /////////////////////////////////////////////////////
+
+  //Heap Sort
+  int num5[] = {2,0,1,9,5,5,5,0,5,8};
+  int size5 = sizeof(num5) / sizeof(num5[0]);
+  char name5[] = "anil onal";
+  int sizec5 = strlen(name5);
+  printf("\n\t\tHeap Sort\n");
+  h=clock();
+  heapsortnum(num5, size5);
+  h=clock()-h;
+  printarraynum(num5,size5);
+  printf("number's function duration %f\n",((float)h)/CLOCKS_PER_SEC);
+  hn=clock();
+  heapsortname(name5, sizec5);
+  hn=clock()-hn;
+  printf("%s\n",name5);
+  printf("name's function duration %f\n",((float)hn)/CLOCKS_PER_SEC);
 
  return 0;
 }

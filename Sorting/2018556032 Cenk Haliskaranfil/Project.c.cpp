@@ -1,7 +1,8 @@
-﻿#include <stdio.h>
+#include <stdio.h>
 #include <time.h>
 #include <ctype.h>
 #include <stdlib.h>
+
 clock_t start1, end1, start2, end2, start3, end3, start4, end4, start5, end5, start6, end6;
 
 void InsertionSort(int array[], int size) {
@@ -129,6 +130,62 @@ void MergeSort(int array[],int left,int right) {
 	
 
 }
+void QuickSort(int number[], int first, int last) {
+	int i, j, pivot, temp;
+	if (first < last) {
+		pivot = first;
+		i = first;
+		j = last;
+		while (i < j) {
+			while (number[i] <= number[pivot] && i < last)
+				i++;
+			while (number[j] > number[pivot])
+				j--;
+			if (i < j) {
+				temp = number[i];
+				number[i] = number[j];
+				number[j] = temp;
+			}
+		}
+		temp = number[pivot];
+		number[pivot] = number[j];
+		number[j] = temp;
+		QuickSort(number, first, j - 1);
+		QuickSort(number, j + 1, last);
+	}
+}
+void Heapify(int number[], int size, int i) {
+	int largest = i;
+	int leftchild = 2 * i + 1;
+	int rightchild = 2 * i + 2;
+	if (number[leftchild] > number[largest] && leftchild < size)
+		largest = leftchild;
+
+	if (number[rightchild] > number[largest] && rightchild < size)
+		largest = rightchild;
+
+	if (largest != i) {
+		swap(&number[i], &number[largest]);
+		Heapify(number, size, largest);
+	}
+
+
+
+
+}
+
+
+void HeapSort(int number[], int size) {
+	for (int i = size / 2 - 1; i >= 0; i--) {
+		Heapify(number, size, i);
+	}
+	for (int i = size - 1; i > 0; i--) {
+		swap(&number[0], &number[i]);
+		Heapify(number, i, 0);
+	}
+
+
+}
 
 void printArray(int array[],int size){
 
@@ -151,7 +208,7 @@ int main()
 {
 	
 
-	int num1[50], num2[50], num3[50], num4[50], adressofletters1[50], adressofletters2[50], adressofletters3[50], adressofletters4[50];
+	int num1[50], num2[50], num3[50], num4[50], num5[50], num6[50],adressofletters1[50], adressofletters2[50], adressofletters3[50], adressofletters4[50], adressofletters5[50],adressofletters6[50];
 	
 	int num[]={2, 0, 1, 8, 5, 5, 6, 0, 3, 2};
 	char name[] =  "Cenk Haliskaranfil" ;
@@ -165,6 +222,8 @@ int main()
 		num2[i] = num[i];
 		num3[i] = num[i];
 		num4[i] = num[i];
+		num5[i] = num[i];
+		num6[i] = num[i];
 	}
 
 	for (int i = 0; i < strsize; i++) {
@@ -177,6 +236,8 @@ int main()
 		adressofletters2[i] = adressofletters[i];
 		adressofletters3[i] = adressofletters[i];
 		adressofletters4[i] = adressofletters[i];
+		adressofletters5[i] = adressofletters[i];
+		adressofletters6[i] = adressofletters[i];
 	}
 	printf("Original arrays: \nNumber: 2018556032");
 	printf("\nName: Cenk Haliskaranfil\n\nSorted arrays:\n\n");
@@ -190,7 +251,6 @@ int main()
 	
 	float time_taken1 = ((float)(end1 - start1)) / CLOCKS_PER_SEC;
 	printf("\n\nIt took %.20lf seconds to sort arrays with Insertion Sort\n\n", time_taken1);
-
 	
 	
 
@@ -205,7 +265,6 @@ int main()
 	printf("\n\nIt took %.20lf seconds to sort arrays with Selection Sort\n\n", time_taken2);
 
 
-
 	
 
 	start3 = clock();
@@ -217,7 +276,6 @@ int main()
 	double time_taken3 = ((double)(end3 - start3)) / CLOCKS_PER_SEC;
 	printf("\n\nIt took %.20lf seconds to sort arrays with Bubble Sort\n\n", time_taken3);
 
-
 	
 	start4 = clock();
 	MergeSort(num4,0,size-1);
@@ -228,8 +286,26 @@ int main()
 	double time_taken4 = ((double)(end4-start4)) / CLOCKS_PER_SEC;
 	printf("\n\nIt took %.20lf seconds to sort arrays with Merge Sort\n\n", time_taken4);
 
+	start5 = clock();
+	QuickSort(num5, 0, size - 1);
+	QuickSort(adressofletters5, 0, strsize - 1);
+	end5 = clock();
+	printArray(num5, size);
+	printStringArray(adressofletters5, strsize);
+	double time_taken5 = ((double)(end5 - start5)) / CLOCKS_PER_SEC;
+	printf("\n\nIt took %.20lf seconds to sort arrays with Quick Sort\n\n", time_taken5);
+
+
+	start6 = clock();
+	HeapSort(num6, size);
+	HeapSort(adressofletters6, strsize);
+	end6 = clock();
+	printArray(num6, size);
+	printStringArray(adressofletters6, strsize);
+	double time_taken6 = ((double)(end6 - start6)) / CLOCKS_PER_SEC;
+	printf("\n\nIt took %.20lf seconds to sort arrays with Heap Sort\n\n", time_taken6);
+
 
 
 	return 0;
 }
-

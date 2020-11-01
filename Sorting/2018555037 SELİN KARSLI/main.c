@@ -5,6 +5,8 @@
 #define Lsize 30
 #define Rsize 30
 
+void swap(int* s, int* k);
+void swap_char(char* s, char* k);
 
 void printArray(int array_sort[], int size);
 void printArray_char(char array_sort[], int size);
@@ -20,6 +22,18 @@ void BubbleSort_char(char array_sort[], int size);
 
 void MergeSort(int array_sort[], int left, int right);
 void MergeSort_char(char array_sort[], int left, int right);
+
+int partition(int array_sort[], int primer, int last_element);
+char partition_char(char array_sort_char[], int primer, int last_element);
+
+void quickSort(int array_sort[], int primer, int last_element);
+void quickSort_char(char array_sort[], int primer, int last_element);
+
+void heapify(int array_sort[], int size, int searching_index);
+void heapify_char(char array_sort[], int size2, int searching_index);
+
+void heapSort(int array_sort[], int size);
+void heapSort_char(char array_sort[], int size2);
 
 
 int main() {
@@ -53,7 +67,6 @@ int main() {
 	BubbleSort(IDNumber, length);
 	end_t = clock();
 	printArray(IDNumber, length);
-
 	printf("\nThe total time for BUBBLE SORT : %f\n", ((double)(end_t - start_t)) / CLOCKS_PER_SEC);
 
 	printf("MERGE SORT \n");
@@ -62,21 +75,35 @@ int main() {
 	printArray(IDNumber, length);
 	printf("\n");
 	end_t = clock();
-	printf("The total time for MERGE SORT : %f\n\n", ((double)(end_t - start_t)) / CLOCKS_PER_SEC);
+	printf("The total time for MERGE SORT : %f\n", ((double)(end_t - start_t)) / CLOCKS_PER_SEC);
 
+	printf("OUICK SORT\n");
+	start_t = clock();
+	quickSort(IDNumber, 0, length - 1);
+	end_t = clock();
+	printArray(IDNumber, length);
+	printf("\nThe total time for OUICK SORT: %f\n", ((double)(end_t - start_t)) / CLOCKS_PER_SEC);
 
+	printf("HEAP SORT:\n");
+	start_t = clock();
+	heapSort(IDNumber, length);
+	end_t = clock();
+	printArray(IDNumber, length);
+	printf("\nThe total time for HEAP SORT : %f\n", ((double)(end_t - start_t)) / CLOCKS_PER_SEC);
+
+	printf("\n\n");
 	printArray_char(studentName, length2);
 
 
 	printf("\n\n");
+	printf("INSERTION SORT\n");
 	start_t = clock();
 	InsertionSort_char(studentName, length2);
 	end_t = clock();
 	printArray_char(studentName, length2);
-	printf("\n");
-	printf("The total time for INSERTION SORT : %f\n", ((double)(end_t - start_t)) / CLOCKS_PER_SEC);
+	printf("\nThe total time for INSERTION SORT : %f\n", ((double)(end_t - start_t)) / CLOCKS_PER_SEC);
 
-
+	printf("SELECTION SORT\n");
 	start_t = clock();
 	SelectionSort_char(studentName, length2);
 	end_t = clock();
@@ -84,6 +111,7 @@ int main() {
 	printf("\n");
 	printf("The total time for SELECTION SORT : %f\n", ((double)(end_t - start_t)) / CLOCKS_PER_SEC);
 
+	printf("BUBBLE SORT\n");
 	start_t = clock();
 	BubbleSort_char(studentName, length2);
 	printArray_char(studentName, length2);
@@ -92,16 +120,43 @@ int main() {
 	printf("The total time for BUBBLE SORT : %f\n", ((double)(end_t - start_t)) / CLOCKS_PER_SEC);
 
 
-	
+	printf("MERGE SORT\n");
 	start_t = clock();
-	MergeSort_char(studentName, 0, length2- 1);
+	MergeSort_char(studentName, 0, length2 - 1);
 	printArray_char(studentName, length2);
 	end_t = clock();
-  printf("\n");
-	printf("The total time for MERGE SORT : %f\n", ((double)(end_t - start_t))/CLOCKS_PER_SEC);
-	
+	printf("\n");
+	printf("The total time for MERGE SORT : %f\n", ((double)(end_t - start_t)) / CLOCKS_PER_SEC);
+
+	printf("OUICK SORT\n");
+	start_t = clock();
+	quickSort_char(studentName, 0, length2 - 1);
+	end_t = clock();
+	printArray_char(studentName, length2);
+	printf("\nThe total time for OUICK SORT: %f\n", ((double)(end_t - start_t)) / CLOCKS_PER_SEC);
+
+	printf("HEAP SORT:\n");
+	start_t = clock();
+	heapSort_char(studentName, length2);
+	end_t = clock();
+	printArray_char(studentName, length2);
+	printf("\nThe total time for HEAP SORT : %f\n", ((double)(end_t - start_t)) / CLOCKS_PER_SEC);
+
 
 	return 0;
+}
+
+
+void swap(int* x, int* y) {
+	int temp = *x;
+	*x = *y;
+	*y = temp;
+}
+
+void swap_char(char* x, char* y) {
+	char temp = *x;
+	*x = *y;
+	*y = temp;
 }
 
 void printArray(int array_sort[], int size)
@@ -324,8 +379,8 @@ void MergeSort(int array_sort[], int left, int right)
 }
 
 void MergeSort_char(char array_sort[], int left, int right) {
-	
-  int middle;
+
+	int middle;
 	if (left < right)
 	{
 		middle = (left + right) / 2;
@@ -334,5 +389,128 @@ void MergeSort_char(char array_sort[], int left, int right) {
 		MergeSort_char(array_sort, middle + 1, right);
 		merge_char(array_sort, left, middle, right);
 
+	}
+}
+
+int partition(int array_sort[], int primer, int last_element) {
+
+	int pivot = array_sort[last_element];
+	int m = primer - 1;
+
+	for (int n = primer; n <= (last_element - 1); n++) {
+
+		if (array_sort[n] <= pivot) {
+			m++;
+			swap(&array_sort[m], &array_sort[n]);
+		}
+	}
+	swap(&array_sort[m + 1], &array_sort[last_element]);
+	return (m + 1);
+}
+
+char partition_char(char array_sort_char[], int primer, int last_element) {
+
+	int pivot = array_sort_char[last_element];
+	int m = primer - 1;
+
+	for (int n = primer; n <= (last_element - 1); n++) {
+
+		if (array_sort_char[n] <= pivot) {
+			m++;
+			swap_char(&array_sort_char[m], &array_sort_char[n]);
+		}
+	}
+	swap_char(&array_sort_char[m + 1], &array_sort_char[last_element]);
+	return (m + 1);
+}
+
+void quickSort(int array_sort[], int primer, int last_element) {
+
+
+	if (primer < last_element) {
+
+		int piv = partition(array_sort, primer, last_element);
+
+		quickSort(array_sort, primer, piv - 1);
+		quickSort(array_sort, piv + 1, last_element);
+	}
+}
+
+void quickSort_char(char array_sort_char[], int primer, int last_element) {
+
+
+	if (primer < last_element) {
+
+		int piv = partition_char(array_sort_char, primer, last_element);
+
+		quickSort_char(array_sort_char, primer, piv - 1);
+		quickSort_char(array_sort_char, piv + 1, last_element);
+	}
+}
+
+void heapify(int array_sort[], int size, int searching_index) {
+
+	int maximum = searching_index;
+	int left_child = (2 * searching_index + 1);
+	int right_child = (2 * searching_index + 2);
+
+	if (left_child<size && array_sort[left_child]>array_sort[maximum]) {
+
+		maximum = left_child;
+	}
+	if (right_child<size && array_sort[right_child]>array_sort[maximum]) {
+
+		maximum = right_child;
+	}
+	if (maximum != searching_index) {
+		swap(&array_sort[searching_index], &array_sort[maximum]);
+		heapify(array_sort, size, maximum);
+	}
+}
+
+void heapify_char(char array_sort[], int size2, int searching_index) {
+
+	int maximum = searching_index;
+	int left_child = (2 * searching_index + 1);
+	int right_child = (2 * searching_index + 2);
+
+	if (left_child<size2 && array_sort[left_child]>array_sort[maximum]) {
+
+		maximum = left_child;
+	}
+	if (right_child<size2 && array_sort[right_child]>array_sort[maximum]) {
+
+		maximum = right_child;
+	}
+	if (maximum != searching_index) {
+		swap_char(&array_sort[searching_index], &array_sort[maximum]);
+		heapify_char(array_sort, size2, maximum);
+	}
+}
+
+void heapSort(int array_sort[], int size) {
+
+	for (int i = size / 2 - 1; i >= 0; i--) {
+
+		heapify(array_sort, size, i);
+	}
+	for (int i = size - 1; i >= 0; i--) {
+
+		swap(&array_sort[0], &array_sort[i]);
+		heapify(array_sort, i, 0);
+	}
+}
+
+
+void heapSort_char(char array_sort[], int size2) {
+
+	for (int i = size2 / 2 - 1; i >= 0; i--) {
+
+		heapify_char(array_sort, size2, i);
+	}
+	for (int i = size2 - 1; i >= 0; i--) {
+
+		swap_char(&array_sort[0], &array_sort[i]);
+		heapify_char(array_sort, i, 0);
 	}
 }

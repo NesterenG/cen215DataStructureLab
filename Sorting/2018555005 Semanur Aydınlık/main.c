@@ -184,6 +184,119 @@ void mergeSortName(char arr[], int left, int right) {
     }
 }
 
+
+int partitionId(int arr[], int left, int right)
+{
+    int pivot = arr[right];
+    int low = (left - 1);
+    int high;
+    
+    for ( high = left; high <= right- 1; high++)
+    {
+        if (arr[high] <= pivot)
+        {
+            low++;
+            swapId(&arr[low], &arr[high]);
+        }
+    }
+    swapId(&arr[low + 1], &arr[right]);
+    return (low + 1);
+}
+
+char partitionName(char arr[],int left,int right){
+    int pivot = arr[right];
+    int low = (left - 1);
+    int high;
+    
+    for ( high = left; high <= right- 1; high++)
+    {
+        if (arr[high] <= pivot)
+        {
+            low++;
+            swapName(&arr[low], &arr[high]);
+        }
+    }
+    swapName(&arr[low + 1], &arr[right]);
+    return (low + 1);
+}
+void quickSortId(int arr[], int left, int right)
+{
+    if (left < right)
+    {
+        int pivot = partitionId(arr, left, right);
+        quickSortId(arr, left, pivot - 1);
+        quickSortId(arr, pivot + 1, right);
+    }
+}
+
+void quickSortName(char arr[], int left, int right)
+{
+    if (left < right)
+    {
+        int pivot = partitionName(arr, left, right);
+        quickSortName(arr, left, pivot - 1);
+        quickSortName(arr, pivot + 1, right);
+    }
+}
+void heapifyId(int arr[],int size,int i) {
+	int largest = i;
+	int leftChild = 2 * i + 1;
+	int rightChild = 2 * i + 2;
+	
+	if (arr[leftChild] > arr[largest] && leftChild<size) 
+		largest = leftChild;
+
+		if (arr[rightChild] > arr[largest] && rightChild<size) 
+			largest = rightChild;
+		if (largest != i) {
+			swapId(&arr[i], &arr[largest]);
+			heapifyId(arr, size, largest);
+		}
+
+}
+void heapSortId(int arr[],int size) {
+	int i;
+	for (i = size / 2 - 1; i >= 0;i-- ) {
+		heapifyId(arr, size, i);
+	}
+
+	for (i = size - 1; i > 0; i--) {
+		swapId(&arr[0],&arr[i]);
+		heapifyId(arr , i , 0);
+	}
+
+}
+
+void heapifyName(char arr[],int size,int i) {
+	int largest = i;
+	int leftChild = 2 * i + 1;
+	int rightChild = 2 * i + 2;
+	
+	if (arr[leftChild] > arr[largest] && leftChild<size) 
+		largest = leftChild;
+
+		if (arr[rightChild] > arr[largest] && rightChild<size) 
+			largest = rightChild;
+		if (largest != i) {
+			swapName(&arr[i], &arr[largest]);
+			heapifyName(arr, size, largest);
+		}
+
+}
+void heapSortName(char arr[],int size) {
+	int i;
+	for (i = size / 2 - 1; i >= 0;i-- ) {
+		heapifyName(arr, size, i);
+	}
+
+	for (i = size - 1; i > 0; i--) {
+		swapName(&arr[0],&arr[i]);
+		heapifyName(arr , i , 0);
+	}
+
+}
+
+
 void printSortId(int arr[], int size) {
     int i;
     for (i = 0; i < size; ++i) {
@@ -256,8 +369,31 @@ int main()
     mergeSortName(Name, 0, size2 - 1);
     t = clock() - t;
     printSortName(Name, size2);
+
+    printf("Time of merge sort Name: %f\n\n", ((double)(t)) / CLOCKS_PER_SEC);
+    
+    printf("--QUICK SORT--\n");
+    quickSortId(Id, 0 , size1-1);
+    t = clock() - t;
+    printSortId(Id,size1);
+    printf("Time of quick sort Id: %f\n",((double)(t)) / CLOCKS_PER_SEC);
+
+    quickSortName(Name, 0 ,size2-1);
+    t= clock() - t;
+    printSortName(Name,size2);
+    printf("Time of quick sort Name: %f\n\n",((double)(t)) / CLOCKS_PER_SEC);
+
+    printf("--HEAP SORT--\n");
+	heapSortId(Id , size1);
+	t = clock() - t;
+	printSortId(Id,size1);
+	printf("Time of heap sort Id: %f\n", ((double)(t)) / CLOCKS_PER_SEC);
+	
+	heapSortName(Name, size2 );
+	t = clock() - t;
+	printSortName(Name, size2);
+	printf("Time of heap sort Name: %f\n\n", ((double)(t)) / CLOCKS_PER_SEC);
+
     printf("Time of merge sort Name: %f\n", ((double)(t)) / CLOCKS_PER_SEC);
-
-
     return 0;
 }

@@ -235,6 +235,145 @@ void printArrayNumber(int number[], int n)
 		printf("%d ", number[i]);
 	printf("\n");
 }
+ //QUICK SORT ALGORITHM
+int partitionNumber (int number[], int low, int high) 
+{ 
+    int pivot = number[high];   
+    int i = (low - 1);  
+    
+    int j;
+    for (j = low; j <= high- 1; j++) 
+    { 
+       
+        if (number[j] < pivot) 
+        { 
+            i++;   
+            swap(&number[i], &number[j]); 
+        } 
+    } 
+    swap(&number[i + 1], &number[high]); 
+    return (i + 1); 
+} 
+  
+
+void quickSortNumber(int number[], int low, int high) 
+{ 
+    if (low < high) 
+    { 
+       
+        int pi = partitionNumber(number, low, high); 
+  
+       
+        quickSortNumber(number, low, pi - 1); 
+        quickSortNumber(number, pi + 1, high); 
+    } 
+}
+
+int partitionName (char name[], int low, int high) 
+{ 
+    int pivot = name[high];    
+    int i = (low - 1);   
+    
+    int j;
+    for (j = low; j <= high- 1; j++) 
+    { 
+        
+        if (name[j] < pivot) 
+        { 
+            i++;    
+            swapName(&name[i], &name[j]); 
+        } 
+    } 
+    swapName(&name[i + 1], &name[high]); 
+    return (i + 1); 
+} 
+  
+
+void quickSortName(char name[], int low, int high) 
+{ 
+    if (low < high) 
+    { 
+        
+        int pi = partitionName(name, low, high); 
+  
+        
+        quickSortName(name, low, pi - 1); 
+        quickSortName(name, pi + 1, high); 
+    } 
+}
+
+ //HEAP SORT ALGORITHM
+
+  void heapifyNumber(int arr[], int n, int i) {
+    
+    int largest = i;
+    int left = 2 * i + 1;
+    int right = 2 * i + 2;
+  
+    if (left < n && arr[left] > arr[largest])
+      largest = left;
+  
+    if (right < n && arr[right] > arr[largest])
+      largest = right;
+  
+   
+    if (largest != i) {
+      swap(&arr[i], &arr[largest]);
+      heapifyNumber(arr, n, largest);
+    }
+  }
+  
+  
+  void heapSortNumber(int number[], int n) {
+    
+    int i;
+    for (i = n / 2 - 1; i >= 0; i--)
+      heapifyNumber(number, n, i);
+  
+     
+    int k;
+    for (k = n - 1; k >= 0; k--) {
+      swap(&number[0], &number[k]);
+  
+      
+      heapifyNumber(number, k, 0);
+    }
+  }
+  void heapifyName(char arr[], int n, int i) {
+   
+    int largest = i;
+    int left = 2 * i + 1;
+    int right = 2 * i + 2;
+  
+    if (left < n && arr[left] > arr[largest])
+      largest = left;
+  
+    if (right < n && arr[right] > arr[largest])
+      largest = right;
+  
+   
+    if (largest != i) {
+      swapName(&arr[i], &arr[largest]);
+      heapifyName(arr, n, largest);
+    }
+  }
+  
+  
+  void heapSortName(char name[], int n) {
+    
+    int i;
+    for (i = n / 2 - 1; i >= 0; i--)
+      heapifyName(name, n, i);
+  
+   
+    int k;
+    for (k = n - 1; k >= 0; k--) {
+      swapName(&name[0], &name[k]);
+  
+      
+      heapifyName(name, k, 0);
+    }
+  }
 
 
 int main()
@@ -292,6 +431,28 @@ int main()
 	t = clock() - t;
 	printArrayNumber(number, n);
 	printf("Merge Sort Process: %f\n\n", ((double)t) / CLOCKS_PER_SEC);	
+	/**************************/
+    printf("******Quick Sort******\n");
+	t = clock();
+	quickSortName(name, 0, len-1);
+	t = clock() - t;
+	printArrayName(name, len);
+	printf("Quick Sort Process: %f\n\n", ((double)t) / CLOCKS_PER_SEC);
+	quickSortNumber(number, 0, n - 1); 
+	t = clock() - t;
+	printArrayNumber(number, n);
+	printf("Quick Sort Process: %f\n\n", ((double)t) / CLOCKS_PER_SEC);	
+	/**************************/
+    printf("******Heap Sort******\n");
+	t = clock();
+	heapSortName(name, len);
+	t = clock() - t;
+	printArrayName(name, len);
+	printf("Heap Sort Process: %f\n\n", ((double)t) / CLOCKS_PER_SEC);
+	heapSortNumber(number, n); 
+	t = clock() - t;
+	printArrayNumber(number, n);
+	printf("Heap Sort Process: %f\n\n", ((double)t) / CLOCKS_PER_SEC);
 	
 	return 0;
     

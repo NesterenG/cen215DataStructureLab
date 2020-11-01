@@ -192,6 +192,73 @@ void insertionsortname(char array[], int size) {
 }
 
 
+
+
+
+void printArray(int array[], int size) {
+	int i;
+	for (i = 0; i < size; ++i) {
+		printf("%d\t", array[i]);
+	}
+	printf("\n");
+}
+
+int partition(int array[], int low, int high) {
+
+  int pivot = array[high];
+  int i = (low - 1);
+  int j;
+
+  for (j = low; j < high; j++) {
+    if (array[j] <= pivot) {
+      i++;
+      swap(&array[i], &array[j]);
+    }
+  }
+
+  swap(&array[i + 1], &array[high]);
+  return (i + 1);
+}
+
+void quickSort(int array[], int low, int high) {
+  if (low < high) {
+
+    int pi = partition(array, low, high);
+
+    quickSort(array, low, pi - 1);
+
+    quickSort(array, pi + 1, high);
+  }
+}
+
+char partitionChar(char array[], int low, int high) {
+
+  int pivot = array[high];
+  int i = (low - 1);
+  int j;
+
+  for (j = low; j < high; j++) {
+    if (array[j] <= pivot) {
+      i++;
+      swapName(&array[i], &array[j]);
+    }
+  }
+
+  swapName(&array[i + 1], &array[high]);
+  return (i + 1);
+}
+
+void quickSortName(char array[], int low, int high) {
+  if (low < high) {
+
+    int pi = partitionChar(array, low, high);
+
+    quickSortName(array, low, pi - 1);
+
+    quickSortName(array, pi + 1, high);
+  }
+}
+
 void heapify(int array[], int size, int i ) {
 	
 	int largest = i; //our loot is largest
@@ -265,17 +332,6 @@ void heapSortName(char array[], int size){
 }
 
 
-
-
-void printArray(int array[], int size) {
-	int i;
-	for (i = 0; i < size; ++i) {
-		printf("%d\t", array[i]);
-	}
-	printf("\n");
-}
-
-
 int main() {
 	clock_t t;
 	
@@ -346,21 +402,7 @@ int main() {
 	insertionsortname(insertionname, insertionnamesize);
 	t = (double)clock()-t;
 	printf("Insertion Sort for Name \n %s\nInsertion Sort Performance for Name: %f\n\n\n", insertionname,((double)t) / CLOCKS_PER_SEC);
-
-	int quicksortnum[] = { 2,0,1,8,5,5,6,0,5,8 };
-	char quicksortname[] = "Burak OZDOGAN";
-	int quicksortsize = sizeof(quicksortnum) / sizeof(quicksortnum[0]);
-	int quicksortnamesize = strlen(quicksortname);
-	t = (double)clock();
-	quickSort(quicksortnum, 0, quicksortsize-1);
-	t = (double)clock()-t;
-	printf("Quick for Number\n");
-	printArray(quicksortnum, quicksortsize);
-	printf("Quick Sort Performance for Number: %f\n\n", ((double)t) / CLOCKS_PER_SEC);
-	t = (double)clock();
-	quickSortName(quicksortname, 0, quicksortnamesize-1);
-	t = (double)clock()-t;
-	printf("Quick Sort for Name \n %s\nQuick Sort Performance for Name: %f\n\n\n", quicksortname,((double)t) / CLOCKS_PER_SEC);
+	
 	
 	int heapsortnum[] = { 2,0,1,8,5,5,6,0,5,8 };
 	char heapsortname[] = "Burak OZDOGAN";
@@ -377,6 +419,22 @@ int main() {
 	t = (double)clock()-t;
 	printf("Heap Sort for Name \n %s\nHeap Sort Performance for Name: %f\n\n\n", heapsortname,((double)t) / CLOCKS_PER_SEC);
 	
+	int quicksortnum[] = { 2,0,1,8,5,5,6,0,5,8 };
+	char quicksortname[] = "Burak OZDOGAN";
+	int quicksortsize = sizeof(quicksortnum) / sizeof(quicksortnum[0]);
+	int quicksortnamesize = strlen(quicksortname);
+	t = (double)clock();
+	quickSort(quicksortnum, 0, quicksortsize-1);
+	t = (double)clock()-t;
+	printf("Quick for Number\n");
+	printArray(quicksortnum, quicksortsize);
+	printf("Quick Sort Performance for Number: %f\n\n", ((double)t) / CLOCKS_PER_SEC);
+	t = (double)clock();
+	quickSortName(quicksortname, 0, quicksortnamesize-1);
+	t = (double)clock()-t;
+	printf("Quick Sort for Name \n %s\nQuick Sort Performance for Name: %f\n\n\n", quicksortname,((double)t) / CLOCKS_PER_SEC);
+	
+
 
 	return 0;
 }

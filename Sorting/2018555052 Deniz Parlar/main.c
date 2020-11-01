@@ -1,6 +1,16 @@
 #include<stdio.h>
 #include<string.h>
 #include<time.h>
+void Swap(int* a, int* b) {
+	int temp = *a;
+	*a = *b;
+	*b = temp;
+}
+void SwapChar(char* a, char* b) {
+	int temp = *a;
+	*a = *b;
+	*b = temp;
+}
 void PrintArray(int x[],int size) {
 	
 	int i;
@@ -246,6 +256,114 @@ void sortChar(char x[], int i, int j)
 		MergesortChar(x, i, avg, j);
 	}
 }
+void SortingQuick(int arr[], int low, int high) {
+	int first, last, pivot;
+	first = low;
+	last = high;
+
+	pivot = arr[(last + first) / 2];
+	do {
+		while (arr[first] < pivot && first < last) {
+			first++;
+		}
+		while (arr[last] > pivot && last > first) {
+			last--;
+		}
+		if (first <= last) {
+			Swap(&arr[first], &arr[last]);
+			first++;
+			last--;
+		}
+	} while (first <= last);
+
+	if (low < last) {
+		SortingQuick(arr, low, last);
+	}
+	if (first < high) {
+		SortingQuick(arr, first, high);
+	}
+
+}
+void CharSortingQuick(char arr[], int low, int high) {
+	int i, j;
+	i = low;
+	j = high;
+	char pivot = arr[(low + high) / 2];
+	do {
+
+		while (arr[i] < pivot && i < high) {
+			i++;
+		}
+		while (arr[j] > pivot && j > low) {
+			j--;
+		}
+		if (i <= j) {
+			SwapChar(&arr[i], &arr[j]);
+			i++;
+			j--;
+		}
+	} while (i <= j);
+
+
+	if (low < j) {
+		CharSortingQuick(arr, low, j);
+	}
+	if (i < high) {
+		CharSortingQuick(arr, i, high);
+	}
+}
+void Heapify(int arr[], int size, int i) {
+	int left_child, right_child, max;
+	max = i;
+	left_child = i * 2 + 1;
+	right_child = i * 2 + 2;
+	if (arr[left_child] > arr[max] && left_child < size) {
+		max = left_child;
+	}
+	if (arr[right_child] > arr[max] && right_child < size) {
+		max = right_child;
+	}
+	if (i != max) {
+		Swap(&arr[i], &arr[max]);
+		Heapify(arr, size, max);
+	}
+}
+void SortingHeap(int arr[], int size) {
+	int i;
+	for (i = size / 2 - 1; i >= 0; i--) {
+		Heapify(arr, size, i);
+	}
+	for (i = size - 1; i >= 0; i--) {
+		Swap(&arr[i], &arr[0]);
+		Heapify(arr, i, 0);
+	}
+}
+void CharHeapify(char arr[], int size, int i) {
+	int left_child, right_child, max;
+	max = i;
+	left_child = i * 2 + 1;
+	right_child = i * 2 + 2;
+	if (arr[left_child] > arr[max] && left_child < size) {
+		max = left_child;
+	}
+	if (arr[right_child] > arr[max] && right_child < size) {
+		max = right_child;
+	}
+	if (i != max) {
+		SwapChar(&arr[i], &arr[max]);
+		CharHeapify(arr, size, max);
+	}
+}
+void CharSortingHeap(char arr[], int size) {
+	int i;
+	for (i = size / 2 - 1; i >= 0; i--) {
+		CharHeapify(arr, size, i);
+	}
+	for (i = size - 1; i >= 0; i--) {
+		SwapChar(&arr[i], &arr[0]);
+		CharHeapify(arr, i, 0);
+	}
+}
 
 int main(){
 
@@ -253,6 +371,7 @@ int main(){
 	int NO1[10] = { 2, 0, 1, 8, 5, 5, 5, 0, 5, 2 };
 	char Name1[] = "deniz parlar";
 	int k = sizeof(Name1);
+	int size=sizeof(NO1)/sizeof(NO1[0]);
 	printf("\t\t My number: ");
 	for (int i = 0; i < 10; i++) {
 		printf("%d", NO1[i]);
@@ -328,5 +447,38 @@ int main(){
 	timer = clock() - timer;
 	PrintChar(Name4, k+1);
 	printf("\nMerge_time_of_char: %f", (((double)timer) / CLOCKS_PER_SEC));
+	printf("\n\n\n");
+	
+	int NO5[10] = { 2, 0, 1, 8, 5, 5, 5, 0, 5, 2 };
+	char Name5[] = "deniz parlar";
+	printf("Sorting with Quick: \n");
+	timer = clock();
+	SortingQuick(NO5,0,size-1);
+	timer = clock() - timer;
+	PrintArray(NO5, size);
+	printf("\nQuick_time_of_int: %f", (((double)timer) / CLOCKS_PER_SEC));
 	printf("\n");
+	timer = clock();
+	CharSortingQuick(Name5,0, k-1);
+	timer = clock() - timer;
+	PrintChar(Name5, k);
+	printf("\nQuick_time_of_char: %f", (((double)timer) / CLOCKS_PER_SEC));
+	printf("\n\n\n");
+
+
+        int NO6[10] = { 2, 0, 1, 8, 5, 5, 5, 0, 5, 2 };
+	char Name6[] = "deniz parlar";
+	printf("Sorting with Heap: \n");
+	timer = clock();
+	SortingHeap(NO6,size);
+	timer = clock() - timer;
+	PrintArray(NO6, size);
+	printf("\nHeap_time_of_int: %f", (((double)timer) / CLOCKS_PER_SEC));
+	printf("\n");
+	timer = clock();
+	CharSortingHeap(Name6,k);
+	timer = clock() - timer;
+	PrintChar(Name6, k);
+	printf("\nHeap_time_of_char: %f", (((double)timer) / CLOCKS_PER_SEC));
+	printf("\n\n");
 }

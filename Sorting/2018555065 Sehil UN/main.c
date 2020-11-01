@@ -5,7 +5,7 @@
 
 /*
 	Number : 2018555065;
-	Name : Sehil ÜN;
+	Name : Sehil ÃœN;
 */
 
 void printFunc(int array[], int n)
@@ -29,6 +29,122 @@ void swapChar(char *x, char *y)
     *x = *y;
     *y = temp;
 }
+
+
+
+//Quick sort algorithm
+
+int partition(int array[], int low, int high) {
+    int pivot = array[high];
+    int i = (low - 1);
+    int j;
+    for(j = low; j <= high - 1; j++) {
+        if(array[j] < pivot) {
+            i++;
+            swap(&array[i], &array[j]);
+        }
+    }
+    swap(&array[i + 1], &array[high]);
+    return (i+1);
+}
+
+void quickSort(int array[], int low, int high) {
+    if (low < high) { 
+        int part = partition(array, low, high); 
+
+        quickSort(array, low, part - 1); 
+        quickSort(array, part + 1, high); 
+    } 
+}
+
+char partitionChar(char array[], int low, int high) {
+    int pivot = array[high];
+    int i = (low - 1);
+    int j;
+    for(j = low; j <= high - 1; j++) {
+        if(array[j] < pivot) {
+            i++;
+            swapChar(&array[i], &array[j]);
+        }
+    }
+    swapChar(&array[i + 1], &array[high]);
+    return (i+1);
+}
+
+void quickSortChar(char array[], int low, int high) {
+    if (low < high) { 
+        int part = partitionChar(array, low, high); 
+
+        quickSortChar(array, low, part - 1); 
+        quickSortChar(array, part + 1, high); 
+    } 
+}
+
+//Heap sort algorithm
+
+void heapify(int array[], int n, int i) { 
+    int largest = i;
+    int l = 2*i + 1; 
+    int r = 2*i + 2;
+
+    if (l < n && array[l] > array[largest]) {
+    	largest = l;
+	}
+ 
+    if (r < n && array[r] > array[largest]) {
+    	largest = r; 
+	}
+        
+    if (largest != i) { 
+        swap(&array[i], &array[largest]); 
+        heapify(array, n, largest); 
+    } 
+} 
+
+void heapSort(int array[], int n) { 
+    int i,j;
+    for (i = n / 2 - 1; i >= 0; i--) {
+    	heapify(array, n, i);
+	}
+         
+
+    for (j=n-1; j>0; j--) { 
+        swap(&array[0], &array[j]); 
+        heapify(array, j, 0); 
+    } 
+} 
+
+void heapifyChar(char array[], int n, int i) { 
+    int largest = i;
+    int l = 2*i + 1; 
+    int r = 2*i + 2;
+
+    if (l < n && array[l] > array[largest]){
+    	largest = l;
+	} 
+         
+    if (r < n && array[r] > array[largest]){
+    	largest = r;
+	} 
+         
+    if (largest != i) { 
+        swapChar(&array[i], &array[largest]); 
+        heapifyChar(array, n, largest); 
+    } 
+} 
+
+void heapSortChar(char array[], int n) { 
+    int i,j;
+    for (i = n / 2 - 1; i >= 0; i--){
+    	heapifyChar(array, n, i);
+	} 
+         
+    for (j=n-1; j>0; j--) { 
+        swapChar(&array[0], &array[j]); 
+        heapifyChar(array, j, 0); 
+    } 
+} 
+
 
 // Bubble Sort Algorithm
 void bubbleSort(int array[], int n)
@@ -232,6 +348,8 @@ void mergeCharSort(char arr[], int x, int y)
     }
 }
 
+
+
 int main() {
 	
 	printf("Number : 2018555065 \nName : Sehil UN \n");
@@ -256,7 +374,7 @@ int main() {
     time = clock() - time;
     printf("%s\n", name);
     printf("Bubble Char Sort Time: %f\n", ((double)time) / CLOCKS_PER_SEC);
-    printf("----------------------------------------------------------------\n");
+    printf("----------------------------------------------------------------");
 
 
     //Insertion Sort
@@ -273,7 +391,7 @@ int main() {
     printf("\n");
     printf("%s\n", name);
     printf("Insertion Char Sort Time: %f\n", ((double)time) / CLOCKS_PER_SEC);
-    printf("---------------------------------------------------------------\n");
+    printf("---------------------------------------------------------------");
 
 
     //Selection Sort    
@@ -287,7 +405,7 @@ int main() {
     time = clock() - time;
     printf("%s\n", name);
     printf("Selection Char Sort Time: %f\n", ((double)time) / CLOCKS_PER_SEC);
-    printf("----------------------------------------------------------------\n");
+    printf("----------------------------------------------------------------");
 
 
     //Merge Sort
@@ -301,6 +419,35 @@ int main() {
     time = clock() - time;
     printf("%s\n", name);
     printf("Merge Char Sort Time: %f\n", ((double)time) / CLOCKS_PER_SEC);
+    printf("----------------------------------------------------------------");
+   
+    
+     // Quick Sort
+
+    quickSort(number, 0, n - 1);
+    time = clock() - time;
+    printf("\n*****Quick Sorts***** \n");
+    printFunc(number, n); 
+    printf("Quick Sort Time: %f\n", ((double)time) / CLOCKS_PER_SEC);
+    quickSortChar(name, 0, char_size - 1);
+    time = clock() - time;
+    printf("%s\n", name);
+    printf("Quick Char Sort Time: %f\n", ((double)time) / CLOCKS_PER_SEC);
+    printf("----------------------------------------------------------------");
+
+
+    //Heap Sort
+
+    heapSort(number, n);
+    time = clock() - time;
+    printf("\n*****Heap Sorts***** \n");    
+    printFunc(number, n); 
+    printf("Heap Sort Time: %f\n", ((double)time) / CLOCKS_PER_SEC);
+    heapSortChar(name, char_size);
+    time = clock() - time;
+    printf("%s\n", name);
+    printf("Heap Char sort Time: %f\n", ((double)time) / CLOCKS_PER_SEC);
+
     
     return 0;
 }

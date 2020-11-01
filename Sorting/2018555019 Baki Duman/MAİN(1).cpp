@@ -274,6 +274,158 @@ void bubbleSortName(char name[], int size)
 }
 
 
+
+
+
+
+
+/* Quick sort for number array */
+
+int partitionNum(int num[], int low, int high)
+{
+
+    char pivot = num[high];
+
+    int i = low - 1;
+
+    for (int j = low; j < high; j++)
+    {
+        if (num[j] < pivot)
+        {
+            i++;
+            swapNum(&num[i], &num[j]);
+        }
+    }
+
+    swapNum(&num[i + 1], &num[high]);
+    return i + 1;
+}
+
+void quickSortNum(int num[], int low, int high)
+{
+    int pivot;
+    if (low < high)
+    {
+        pivot = partitionNum(num, low, high);
+        quickSortNum(num, low, pivot - 1);
+        quickSortNum(num, pivot + 1, high);
+    }
+}
+
+/* Quick sort for name array */
+
+int partitionName(char name[], int low, int high)
+{
+
+    int pivot = name[high];
+
+    int i = low - 1;
+
+    for (int j = low; j < high; j++)
+    {
+        if (name[j] < pivot)
+        {
+            i++;
+            swapChar(&name[i], &name[j]);
+        }
+    }
+
+    swapChar(&name[i + 1], &name[high]);
+    return i + 1;
+}
+
+void quickSortName(char name[], int low, int high)
+{
+    int pivot;
+    if (low < high)
+    {
+        pivot = partitionName(name, low, high);
+        quickSortName(name, low, pivot - 1);
+        quickSortName(name, pivot + 1, high);
+    }
+}
+
+/* Heap sort for number array */
+
+void heapifyNum(int num[], int size, int root)
+{
+
+    int largest = root;
+    int left = 2 * root + 1;
+    int right = 2 * root + 2;
+
+    if (size > left && num[left] > num[largest])
+        largest = left;
+    if (size > right && num[right] > num[largest])
+        largest = right;
+
+    if (largest != root)
+    {
+        swapNum(&num[largest], &num[root]);
+
+        heapifyNum(num, size, largest);
+    }
+}
+
+void heapSortNum(int num[], int size)
+{
+
+    for (int i = size / 2 - 1; i >= 0; i--)
+    {
+        heapifyNum(num, size, i);
+    }
+
+    for (int i = size - 1; i > 0; i--)
+    {
+        swapNum(&num[0], &num[i]);
+
+        heapifyNum(num, i, 0);
+    }
+}
+
+
+/* Heap sort for name array */
+
+void heapifyName(char name[], int size, int root)
+{
+
+    int largest = root;
+    int left = 2 * root + 1;
+    int right = 2 * root + 2;
+
+    if (size > left && name[left] > name[largest])
+        largest = left;
+    if (size > right && name[right] > name[largest])
+        largest = right;
+
+    if (largest != root)
+    {
+        swapChar(&name[largest], &name[root]);
+
+        heapifyName(name, size, largest);
+    }
+}
+
+void heapSortName(char name[], int size)
+{
+
+    for (int i = size / 2 - 1; i >= 0; i--)
+    {
+        heapifyName(name, size, i);
+    }
+
+    for (int i = size - 1; i > 0; i--)
+    {
+        swapChar(&name[0], &name[i]);
+
+        heapifyName(name, i, 0);
+    }
+}
+
+
+
+
+
 int main(int argc, char const *argv[])
 {
     int num[] = {2, 0, 1, 8, 5, 5, 5, 0, 1, 9};
@@ -379,6 +531,66 @@ int main(int argc, char const *argv[])
     printf("%s\n", name4);
     printf("time = %f\n", total);
     //END Bubble sort for name array
+
+
+
+
+
+
+
+	int num5[] = {2, 0, 1, 8, 5, 5, 5, 0, 1, 9};
+    char name5[] = "baki duman";
+
+    //Quick sort for num array
+    start = clock();
+    quickSortNum(num5, 0, sizeNum - 1);
+    end = clock();
+    total = (double)(end - start) / CLOCKS_PER_SEC;
+
+    printf("\n\nQuick sort for number array : \n");
+    printArray(num5, sizeNum);
+    printf("time = %f", total);
+    //End Quick sort for num array
+
+    //Quick sort for name array
+    start = clock();
+    quickSortName(name5, 0, sizeName - 1);
+    end = clock();
+    total = (double)(end - start) / CLOCKS_PER_SEC;
+
+    printf("\n\nQuick sort for name array : \n");
+    printf("%s\n", name5);
+    printf("time = %f\n", total);
+    //End Quick sort for name array
+
+    int num6[] = {2, 0, 1, 8, 5, 5, 5, 0, 1, 9};
+    char name6[] = "baki duman";
+
+    //Heap sort for num array
+    start = clock();
+    heapSortNum(num6, sizeNum);
+    end = clock();
+    total = (double)(end - start) / CLOCKS_PER_SEC;
+
+    printf("\n\nHeap sort for number array : \n");
+    printArray(num6, sizeNum);
+    printf("time = %f", total);
+    //End Heap sort for num array
+
+    //Heap sort for name array
+    start = clock();
+    heapSortName(name6, sizeName);
+    end = clock();
+    total = (double)(end - start) / CLOCKS_PER_SEC;
+
+    printf("\n\nHeap sort for name array : \n");
+    printf("%s\n", name6);
+    printf("time = %f\n", total);
+    //End Heap sort for name array
+    
+    
+    
+    
 
     return 0;
 }

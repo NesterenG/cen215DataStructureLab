@@ -255,6 +255,142 @@ void bubbleSortName(char arr[], int n)
 			if (arr[j] > arr[j + 1])
 				swapName(&arr[j], &arr[j + 1]);
 }
+
+int partitionNumber (int arr[], int low, int high) 
+{ 
+    int pivot = arr[high];   
+    int i = (low - 1);  
+    
+    int j;
+    for (j = low; j <= high- 1; j++) 
+    { 
+       
+        if (arr[j] < pivot) 
+        { 
+            i++;   
+            swapNumber(&arr[i], &arr[j]); 
+        } 
+    } 
+    swapNumber(&arr[i + 1], &arr[high]); 
+    return (i + 1); 
+} 
+  
+
+void quickSortNumber(int arr[], int low, int high) 
+{ 
+    if (low < high) 
+    { 
+       
+        int pi = partitionNumber(arr, low, high); 
+  
+       
+        quickSortNumber(arr, low, pi - 1); 
+        quickSortNumber(arr, pi + 1, high); 
+    } 
+}
+
+int partitionName (char arr[], int low, int high) 
+{ 
+    int pivot = arr[high];    
+    int i = (low - 1);   
+    
+    int j;
+    for (j = low; j <= high- 1; j++) 
+    { 
+        
+        if (arr[j] < pivot) 
+        { 
+            i++;    
+            swapName(&arr[i], &arr[j]); 
+        } 
+    } 
+    swapName(&arr[i + 1], &arr[high]); 
+    return (i + 1); 
+} 
+  
+
+void quickSortName(char arr[], int low, int high) 
+{ 
+    if (low < high) 
+    { 
+        
+        int pi = partitionName(arr, low, high); 
+  
+        
+        quickSortName(arr, low, pi - 1); 
+        quickSortName(arr, pi + 1, high); 
+    } 
+}
+  void heapifyNumber(int arr[], int n, int i) {
+    
+    int largest = i;
+    int left = 2 * i + 1;
+    int right = 2 * i + 2;
+  
+    if (left < n && arr[left] > arr[largest])
+      largest = left;
+  
+    if (right < n && arr[right] > arr[largest])
+      largest = right;
+  
+   
+    if (largest != i) {
+      swapNumber(&arr[i], &arr[largest]);
+      heapifyNumber(arr, n, largest);
+    }
+  }
+  
+  
+  void heapSortNumber(int arr[], int n) {
+    
+    int i;
+    for (i = n / 2 - 1; i >= 0; i--)
+      heapifyNumber(arr, n, i);
+  
+     
+    int k;
+    for (k = n - 1; k >= 0; k--) {
+      swapNumber(&arr[0], &arr[k]);
+  
+      
+      heapifyNumber(arr, k, 0);
+    }
+  }
+  void heapifyName(char arr[], int n, int i) {
+   
+    int largest = i;
+    int left = 2 * i + 1;
+    int right = 2 * i + 2;
+  
+    if (left < n && arr[left] > arr[largest])
+      largest = left;
+  
+    if (right < n && arr[right] > arr[largest])
+      largest = right;
+  
+   
+    if (largest != i) {
+      swapName(&arr[i], &arr[largest]);
+      heapifyName(arr, n, largest);
+    }
+  }
+  
+  
+  void heapSortName(char arr[], int n) {
+    
+    int i;
+    for (i = n / 2 - 1; i >= 0; i--)
+      heapifyName(arr, n, i);
+  
+   
+    int k;
+    for (k = n - 1; k >= 0; k--) {
+      swapName(&arr[0], &arr[k]);
+  
+      
+      heapifyName(arr, k, 0);
+    }
+  }
 int main()
 {
 
@@ -310,8 +446,29 @@ int main()
 	time = clock() - time;
 	printArrayNumber(number, n);
 	printf("Bubble sort time: %f\n", ((double)time) / CLOCKS_PER_SEC);
+	
+	printf("\n-QUICK SORT\n\n");
+	quickSortName(name, 0, len-1);
+	time = clock() - time;
+	printArrayName(name, len);
+	printf("Quick sort time: %f\n", ((double)time) / CLOCKS_PER_SEC);
+
+	quickSortNumber(number, 0, n-1);
+	time = clock() - time;
+	printArrayNumber(number, n);
+	printf("Quick sort time: %f\n", ((double)time) / CLOCKS_PER_SEC);
+	
+	printf("\n-HEAP SORT\n\n");
+	heapSortName(name, len);
+	time = clock() - time;
+	printArrayName(name, len);
+	printf("Heap sort time: %f\n", ((double)time) / CLOCKS_PER_SEC);
+	
+	heapSortNumber(number, n);
+	time = clock() - time;
+	printArrayNumber(number, n);
+	printf("Heap sort time: %f\n", ((double)time) / CLOCKS_PER_SEC);
 
 	return 0;
 }
-
 

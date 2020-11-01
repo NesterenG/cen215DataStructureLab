@@ -242,6 +242,143 @@ void merge_name_sort(char string[], int l, int r)
 }
 
 
+int quick_id_partition (int arr[], int low, int high) 
+{ 
+    int pivot = arr[high];
+    int i = (low - 1);
+  
+    for (int j = low; j <= high- 1; j++) 
+    { 
+        if (arr[j] < pivot) 
+        { 
+            i++;
+            swap(&arr[i], &arr[j]); 
+        } 
+    } 
+    swap(&arr[i + 1], &arr[high]); 
+    return (i + 1); 
+}
+
+
+void quick_id_sort(int arr[], int low, int high) 
+{ 
+    if (low < high) 
+    { 
+        int pi = quick_id_partition(arr, low, high); 
+
+        quick_id_sort(arr, low, pi - 1); 
+        quick_id_sort(arr, pi + 1, high); 
+    } 
+}
+
+
+int quick_name_partition (char string[], int low, int high) 
+{ 
+    int pivot = string[high];
+    int i = (low - 1);
+  
+    for (int j = low; j <= high- 1; j++) 
+    { 
+        if (string[j] < pivot) 
+        { 
+            i++;
+            swap(&string[i], &string[j]); 
+        } 
+    } 
+    swap(&string[i + 1], &string[high]); 
+    return (i + 1); 
+}
+
+
+void quick_name_sort(char string[], int low, int high) 
+{ 
+    if (low < high) 
+    { 
+        int pi = quick_name_partition(string, low, high); 
+
+        quick_name_sort(string, low, pi - 1); 
+        quick_name_sort(string, pi + 1, high); 
+    } 
+}
+
+
+void heapify_id(int arr[], int n, int i)
+{
+
+    int largest = i;
+    int left = 2 * i + 1;
+    int right = 2 * i + 2;
+  
+    if (left < n && arr[left] > arr[largest])
+        largest = left;
+  
+    if (right < n && arr[right] > arr[largest])
+        largest = right;
+  
+    if (largest != i) {
+        swap(&arr[i], &arr[largest]);
+        heapify_id(arr, n, largest);
+    } 
+}
+
+
+void heap_id_sort(int arr[], int n) {
+
+    for (int i = n / 2 - 1; i >= 0; i--)
+        heapify_id(arr, n, i);
+  
+    for (int i = n - 1; i >= 0; i--) {
+        swap(&arr[0], &arr[i]);
+  
+
+        heapify_id(arr, i, 0);
+    }
+}
+
+
+void heapify_name(char arr[],int size,int i)
+{
+	int largest = i;
+	int left = 2 * i + 1;
+	int right = 2 * i + 2;
+	
+	if (arr[left] > arr[largest] && left<size) 
+		largest = left;
+
+		if (arr[right] > arr[largest] && right<size) 
+			largest = right;
+		if (largest != i)
+        {
+			swap2(&arr[i], &arr[largest]);
+			heapify_name(arr, size, largest);
+		}
+}
+
+
+void heap_name_sort(char arr[],int size) {
+	int i;
+	for (i = size / 2 - 1; i >= 0;i-- )
+    {
+		heapify_name(arr, size, i);
+	}
+
+	for (i = size - 1; i > 0; i--)
+    {
+		swap2(&arr[0],&arr[i]);
+		heapify_name(arr , i , 0);
+	}
+
+}
+
+
+void swap2 (char* x, char* y)
+{
+	char temp = *x;
+	*x = *y;
+	*y = temp;
+}
+
+
 void swap(int* xp, int* yp)
 {
     int temp = *xp;
@@ -352,6 +489,51 @@ int main(void)
 
     gettimeofday(&stop, NULL);
     printf("took -> %lu microseconds\n", (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec);
+
+    /* -----> QUICK ID SORT <----- */
+
+    gettimeofday(&start, NULL);
+
+    quick_id_sort(arr, 0, n-1); 
+    printf("\nquick -> ");
+    id_print(arr, n);
+
+    gettimeofday(&stop, NULL);
+    printf("took -> %lu microseconds\n", (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec);
+
+    /* -----> QUICK NAME SORT <----- */
+
+    gettimeofday(&start, NULL);
+
+    quick_name_sort(string, 0, n-1); 
+    printf("quick -> ");
+    name_print(string);
+
+    gettimeofday(&stop, NULL);
+    printf("took -> %lu microseconds\n", (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec);
+
+    /* -----> HEAP ID SORT <----- */
+
+    gettimeofday(&start, NULL);
+
+    heap_id_sort(arr, n); 
+    printf("\nheap -> ");
+    id_print(arr, n);
+
+    gettimeofday(&stop, NULL);
+    printf("took -> %lu microseconds\n", (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec);
+
+    /* -----> HEAP NAME SORT <----- */
+
+    gettimeofday(&start, NULL);
+
+    heap_name_sort(string, m);
+    printf("heap -> ");
+    name_print(string);
+
+    gettimeofday(&stop, NULL);
+    printf("took -> %lu microseconds\n", (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec);
+    printf("\n");
 
     return 0;
 

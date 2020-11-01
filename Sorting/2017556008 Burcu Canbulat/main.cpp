@@ -2,7 +2,14 @@
 #include <string.h>
 #include <time.h>
 
+#define A_SIZE 10
+
 //NUMBER 2017556008 NAME SURNAME:BURCU CANBULAT
+
+ 
+void heap_sort(int *p, int size);
+void sift(int *p, int left, int right);
+void print_array(int *p, int size);
 
 void printArray(int array[], int n)
 {
@@ -209,6 +216,89 @@ void merge_sort_char(char arr[], int z, int y)
     }
 }
 
+void quickSort(int *array,int first,int last){
+    int i; 
+    int j; 
+    int pivot;
+    int tmp; 
+    pivot=first; 
+   
+    if(last>first){
+        pivot=first;
+        i=first;
+        j=last;
+        while (i<j){
+            while (array[i]<=array[pivot] && i<last && j>i){ 
+                i++;
+            }
+            while (array[j]>=array[pivot] && j>=first && j>=i){
+                j--;
+            }
+            if (j>i){ 
+                tmp=array[i];
+                array[i]=array[j];
+                array[j]=tmp;
+            }
+        }
+       
+        tmp=array[j];
+        array[j]=array[pivot];
+        array[pivot]=tmp;
+        quickSort(array,first,j-1);
+        quickSort(array,j+1,last);
+    }
+}
+
+void heap_sort (int *p, int size)
+{
+   int  left, right, temp;
+ 
+   if (size <= 1)
+      return;
+   left = size / 2;
+   right = size - 1;
+ 
+   while (--left >= 0)
+      sift(p, left, right);
+ 
+   for (;;) {
+      temp = p[0];
+      p[0] = p[right];
+      p[right] = temp;
+      if (--right <= 0)
+         break;
+      sift(p, 0, right);
+   }
+}
+
+void sift(int *p, int left, int right)
+{
+   int temp, i;
+ 
+   i = left +left +1;
+    temp = p[left];
+ 
+   do {
+      if (i < right && p[i] < p[i+1])
+         i++;
+      if (temp >= p[i])
+         break;
+      p[left] = p[i];
+      left = i;
+      i = 2 * i + 1;
+   } while (i <= right);
+   p[left] = temp;
+}
+
+void print_array(int *p, int size)
+{
+   int i;
+ 
+   for (i = 0; i < size; i++)
+      printf("%d ", p[i]);
+   putchar('\n');
+}
+
 int main() {
  
     printf("NAME AND SURNAME = BURCU CANBULAT NUMBER =  2017556008\n\n");
@@ -266,7 +356,26 @@ int main() {
     merge_sort_char(name, 0, char_size - 1);
     time_t = clock() - time_t;
     printf("%s\n",name);
-    printf("The total time for merge sort name: %f\n", ((double)time_t) / CLOCKS_PER_SEC);
+    printf("The total time for merge sort name: %f\n\n", ((double)time_t) / CLOCKS_PER_SEC);
+
+printf("QUICK SORT\n");
+    quickSort(ogrenci_no, 0, n - 1);
+    time_t= clock() - time_t;
+    printArray(ogrenci_no, n);
+    printf("The total time for quick sort id: %f\n", ((double)time_t) / CLOCKS_PER_SEC);
+    time_t = clock() - time_t;
+    printf("%s\n",name);
+    printf("The total time for quick sort name: %f\n\n", ((double)time_t) / CLOCKS_PER_SEC);
+
+printf("HEAP SORT\n");
+    heap_sort(ogrenci_no, n);
+    time_t= clock() - time_t;
+    printArray(ogrenci_no, n);
+    printf("The total time for heap sort id: %f\n", ((double)time_t) / CLOCKS_PER_SEC);
+    time_t = clock() - time_t;
+    printf("%s\n",name);
+    printf("The total time for heap sort name: %f\n", ((double)time_t) / CLOCKS_PER_SEC);
+
 
     return 0;
 }

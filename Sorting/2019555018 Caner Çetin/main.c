@@ -214,7 +214,131 @@ void merge(int arr[], int left, int middle, int right) {
 		merge(arr,left,middle,right);
 	}
 }
+//Homework 2//
+//-->>
 
+    int partitionName(char arr[], int low, int high)
+{
+    int pivot = arr[high]; 
+    int i = (low - 1);  
+ 
+    for (int j = low; j <= high- 1; j++)
+    {
+        
+        if (arr[j] <= pivot)
+        {
+            i++;    
+            swapChar(&arr[i], &arr[j]);
+        }
+    }
+    swapChar(&arr[i + 1], &arr[high]);
+ 
+    return (i + 1);
+}
+
+int partition(int arr[], int low, int high)
+{
+    int pivot = arr[high]; 
+    int i = (low - 1);  
+ 
+    for (int j = low; j <= high- 1; j++)
+    {
+        
+        if (arr[j] <= pivot)
+        {
+            i++;    
+            swap(&arr[i], &arr[j]);
+        }
+    }
+    swap(&arr[i + 1], &arr[high]);
+ 
+    return (i + 1);
+}
+
+void quickSortName(char arr[], int low, int high)
+{
+    if (low < high)
+    {
+        int pi = partitionName(arr, low, high);
+        
+        quickSortName(arr, low, pi - 1);
+        quickSortName(arr, pi + 1, high);
+    }
+}
+
+void quickSort(int arr[], int low, int high)
+{
+    if (low < high)
+    {
+        int pi = partition(arr, low, high);
+        
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+}
+
+    void heapifyName(char arr[], int size, int i)
+{
+	int largest = i;
+	int leftchild = 2*i+1;
+	int rightchild = 2*i+2;
+	
+	if(arr[leftchild] > arr[largest] && leftchild < size)
+	    largest = leftchild;
+	if(arr[rightchild] > arr[largest] && rightchild < size)
+	    largest = rightchild;
+		
+	if(largest != i)
+	{
+		swapChar(&arr[i], &arr[largest]);
+		heapifyName(arr, size, largest);
+	}
+	    	    
+}
+
+void heapify(int arr[], int size, int i)
+{
+	int largest = i;
+	int leftchild = 2*i+1;
+	int rightchild = 2*i+2;
+	
+	if(arr[leftchild] > arr[largest] && leftchild < size)
+	    largest = leftchild;
+	if(arr[rightchild] > arr[largest] && rightchild < size)
+	    largest = rightchild;
+		
+	if(largest != i)
+	{
+		swap(&arr[i], &arr[largest]);
+		heapify(arr, size, largest);
+	}
+	    	    
+}
+
+void heapSortName(char arr[], int size)
+{
+	for(int i = size/2-1; i>=0; i--)
+		heapifyName(arr, size, i);
+	for(int i = size-1; i>0 ; i--)
+	{
+		swapChar(&arr[0], &arr[i]);
+		heapifyName(arr, i, 0);
+	}	
+	
+}
+
+void heapSort(int arr[], int size)
+{
+	for(int i = size/2-1; i>=0; i--)
+		heapify(arr, size, i);
+	for(int i = size-1; i>0 ; i--)
+	{
+		swap(&arr[0], &arr[i]);
+		heapify(arr, i, 0);
+	}	
+	
+}
+//--<<
 
 void printArray(int arr[],int size){
 
@@ -330,6 +454,60 @@ int main()
 
 	 printf("%s\n", name4);
      printf("TimeName = %f\n", result);
+     
+     //Homework 2
+     //-->>
+     	// quick sort for number
+     printf("quick sort\n\n");
+      int arr5[] = { 2,0,1,9,5,5,5,0,1,8 };
+	  int size5 = sizeof(arr5) / sizeof(arr5[0]);
+	  
+	 start= clock();
+	 quickSort(arr5, 0, size5-1);
+	 end= clock();
+	 result = (double)(end - start) / CLOCKS_PER_SEC;
+     
+     printArray(arr5,size5);
+	 printf("\nTimeNum = %f\n", result);
+	 
+	 // quick sort for name
+       char name5[]= "caner cetin";
+	   int sizeName5= strlen(name5);
+    
+	 start= clock();
+	 quickSortName(name5, 0, sizeName5-1);
+	 end= clock();
+     result = (double)(end - start) / CLOCKS_PER_SEC;
+
+	 printf("%s\n", name5);
+     printf("TimeName = %f\n", result);
+     
+     	// heap sort for number
+     printf("heap sort\n\n");
+      int arr6[] = { 2,0,1,9,5,5,5,0,1,8 };
+	  int size6 = sizeof(arr6) / sizeof(arr6[0]);
+	  
+	 start= clock();
+	 heapSort(arr6, size6);
+	 end= clock();
+	 result = (double)(end - start) / CLOCKS_PER_SEC;
+     
+     printArray(arr6,size6);
+	 printf("\nTimeNum = %f\n", result);
+	 
+	 // heap sort for name
+	 char name6[]= "caner cetin";
+	 int sizeName6= strlen(name6);
+
+	  start= clock();
+	  heapSortName(name6,sizeName6);
+	  end= clock();
+      result = (double)(end - start) / CLOCKS_PER_SEC;
+
+	 printf("%s\n", name6);
+     printf("TimeName = %f\n", result);
+     //--<<
+     
 
 	 return 0;
   

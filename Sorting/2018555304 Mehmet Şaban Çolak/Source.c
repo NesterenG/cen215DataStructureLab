@@ -1,6 +1,19 @@
 #include <stdio.h>
 #include <assert.h>
 #include<time.h>
+//swap student number
+void swapid(int* x, int* y) {
+	int temp = *x;
+	*x = *y;
+	*y = temp;
+
+}
+//swap student name
+void swapname(char* x, char* y) {
+	char temp = *x;
+	*x = *y;
+	*y = temp;
+}
 //student number print function
 void print(int number[],int size) {
 	for (int i = 0; i <= size-1; i++)
@@ -220,6 +233,120 @@ void mergesortn(char number[], int l, int r)
 		mergen(number, l, m, r);
 	}
 }
+// partition for student number
+int partitionnumber(int arr[], int left, int right)
+{
+	int pivot = arr[right];
+	int low = (left - 1);
+	int high;
+
+	for (high = left; high <= right - 1; high++)
+	{
+		if (arr[high] <= pivot)
+		{
+			low++;
+			swapid(&arr[low], &arr[high]);
+		}
+	}
+	swapid(&arr[low + 1], &arr[right]);
+	return (low + 1);
+}
+// quick sort function for student number
+void quicksortnumber(int arr[], int left, int right)
+{
+	if (left < right)
+	{
+		int pivot = partitionnumber(arr, left, right);
+		quicksortnumber(arr, left, pivot - 1);
+		quicksortnumber(arr, pivot + 1, right);
+	}
+}
+// partition for student name
+int partitionname(char arr[], int left, int right)
+{
+	int pivot = arr[right];
+	int low = (left - 1);
+	int high;
+
+	for (high = left; high <= right - 1; high++)
+	{
+		if (arr[high] <= pivot)
+		{
+			low++;
+			swapname(&arr[low], &arr[high]);
+		}
+	}
+	swapname(&arr[low + 1], &arr[right]);
+	return (low + 1);
+}
+// quick sort function for student name
+void quicksortname(char arr[], int left, int right)
+{
+	if (left < right)
+	{
+		int pivot = partitionname(arr, left, right);
+		quicksortname(arr, left, pivot - 1);
+		quicksortname(arr, pivot + 1, right);
+	}
+}
+// heapify student number
+void heapifyid(int arr[], int size, int i) {
+	int largest = i;
+	int leftChild = 2 * i + 1;
+	int rightChild = 2 * i + 2;
+
+	if (arr[leftChild] > arr[largest] && leftChild < size)
+		largest = leftChild;
+
+	if (arr[rightChild] > arr[largest] && rightChild < size)
+		largest = rightChild;
+	if (largest != i) {
+		swapid(&arr[i], &arr[largest]);
+		heapifyid(arr, size, largest);
+	}
+}
+// heap sort function for student number
+void heapsortid(int arr[], int size) {
+	int i;
+	for (i = size / 2 - 1; i >= 0; i--) {
+		heapifyid(arr, size, i);
+	}
+
+	for (i = size - 1; i > 0; i--) {
+		swapid(&arr[0], &arr[i]);
+		heapifyid(arr, i, 0);
+	}
+
+}
+// heapify student name
+void heapifyname(char arr[], int size, int i) {
+	int largest = i;
+	int leftChild = 2 * i + 1;
+	int rightChild = 2 * i + 2;
+
+	if (arr[leftChild] > arr[largest] && leftChild < size)
+		largest = leftChild;
+
+	if (arr[rightChild] > arr[largest] && rightChild < size)
+		largest = rightChild;
+	if (largest != i) {
+		swapname(&arr[i], &arr[largest]);
+		heapifyname(arr, size, largest);
+	}
+}
+// heap sort function for student name
+void heapsortname(char arr[], int size) {
+	int i;
+	for (i = size / 2 - 1; i >= 0; i--) {
+		heapifyname(arr, size, i);
+	}
+
+	for (i = size - 1; i > 0; i--) {
+		swapname(&arr[0], &arr[i]);
+		heapifyname(arr, i, 0);
+	}
+
+}
 int main()
 {
 	clock_t time;
@@ -269,5 +396,27 @@ int main()
 	time = clock() - time;
 	printn(name3, sizen);
 	printf("merge sort time of name: %f\n", ((double)time) / CLOCKS_PER_SEC);
+	
+	int number4[] = { 2,0,1,8,5,5,5,3,0,4 };
+	char name4[] = "mehmet saban colak";
+	quicksortnumber(number4, 0, size - 1);
+	time = clock() - time;
+	print(number4, size);
+	printf("quick sort time of student number: %f\n", ((double)time) / CLOCKS_PER_SEC);
+	quicksortname(name4, 0, sizen - 1);
+	time = clock() - time;
+	printn(name4, sizen);
+	printf("quick sort time of student name: %f\n", ((double)time) / CLOCKS_PER_SEC);
+
+	int number5[] = { 2,0,1,8,5,5,5,3,0,4 };
+	char name5[] = "mehmet saban colak";
+	heapsortid(number5, size);
+	time = clock() - time;
+	print(number5, size);
+	printf("heap sort time of student number: %f\n", ((double)time) / CLOCKS_PER_SEC);
+	heapsortname(name5, sizen);
+	time = clock() - time;
+	printn(name5, sizen);
+	printf("heap sort time of student name: %f\n", ((double)time) / CLOCKS_PER_SEC);
 	return 0;
 }

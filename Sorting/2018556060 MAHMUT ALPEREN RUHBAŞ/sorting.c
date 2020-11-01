@@ -7,12 +7,12 @@
 void number_printer(char number[], int sizeofnum, double timer, char sorttype[])
 {
     printf("########## %s Sort #########", sorttype);
-    printf("\n\n\nThis is my %s sorted number ", sorttype);
+    printf("\nThis is my %s sorted number ", sorttype);
     int k;
     for (k = 0; k < sizeofnum; k++)
         printf("%d ", number[k]);
     putchar('\n');
-    printf("Performance of the %s Sort for number %f \n\n\n", sorttype, (timer / CLOCKS_PER_SEC));
+    printf("Performance of the %s Sort for number %f \n", sorttype, (timer / CLOCKS_PER_SEC));
 }
                                                                 void name_printer(char myname[], int sizeofname, double timer, char sorttype[])
                                                                 {
@@ -143,12 +143,78 @@ void base_merge(char unsorted[], int left, int middle, int right) {
                                                             unsorted[l + 1] = check;
                                                         }
                                                     }
+
+                                                            /////////////////// Heap Sort Function
+void base_heap(char unsorted[], int allsize, int k ) {
+	int temp; int largeone = k; int left = 2 * k + 1; int right = 2 * k + 2;
+	if (unsorted[left] > unsorted[largeone] && left < allsize) 
+	{
+		largeone = left;	
+	}
+	if (unsorted[right] > unsorted[largeone] && right < allsize) 
+	{
+		largeone = right;	
+	}
+	if (largeone != k) 
+	{
+        temp = unsorted[k];
+        unsorted[k] = unsorted[largeone];
+        unsorted[largeone] = temp;
+		base_heap(unsorted, allsize, largeone);
+	}
+}
+                                                    void heap_sort(char unsorted[], int allsize){
+                                                        int l, temp;
+                                                        for(l= allsize/2-1; l>=0 ;l--)
+                                                        {
+                                                            base_heap(unsorted, allsize, l);
+                                                        }
+                                                        int k;
+                                                        for (k = allsize-1; k > 0 ;k--)
+                                                        {
+                                                            temp = unsorted[0];
+                                                            unsorted[0] = unsorted[k];
+                                                            unsorted[k] = temp;
+                                                            base_heap(unsorted, k, 0);
+                                                        }
+                                                    }
+                                                            /////////////////// Quick Sort Function
+void quick_sort(char unsorted[],int first,int last){
+    int k, l, pivot, temp;
+    pivot=first;
+    if(last>first){
+        pivot=first;
+        k=first;
+        l=last;
+        while (k<l){
+            while (unsorted[k]<=unsorted[pivot] && k<last && l>k)
+            {
+                k++;
+            }
+            while (unsorted[l]>=unsorted[pivot] && l>=first && l>=k)
+            {
+                l--;
+            }
+            if (l>k)
+            { 
+                temp=unsorted[k];
+                unsorted[k]=unsorted[l];
+                unsorted[l]=temp;
+            }
+        }
+        temp=unsorted[l];
+        unsorted[l]=unsorted[pivot];
+        unsorted[pivot]=temp;
+        quick_sort(unsorted,first,l-1);
+        quick_sort(unsorted,l+1,last);
+    }
+}
                                                             /////////////////// Total Performance List
-void performance_list(double selection, double bubble, double merge, double invertion, double selection2, double bubble2, double merge2, double invertion2)
+void performance_list(double selection, double bubble, double merge, double invertion, double heap, double quick, double selection2, double bubble2, double merge2, double invertion2, double heap2, double quick2)
 {
-    printf("############# Selection --- Bubble ---- Merge ---- Insertion #############\n");
-    printf("Number Sort : %f --- %f --- %f --- %f #############\n", (selection / CLOCKS_PER_SEC), (bubble / CLOCKS_PER_SEC), (merge / CLOCKS_PER_SEC), (invertion / CLOCKS_PER_SEC));
-    printf("Name   Sort : %f --- %f --- %f --- %f #############\n", (selection2 / CLOCKS_PER_SEC), (bubble2 / CLOCKS_PER_SEC), (merge2 / CLOCKS_PER_SEC), (invertion2 / CLOCKS_PER_SEC));
+    printf("############# Selection --- Bubble ---- Merge ---- Insertion ---- Heap ---- Quick #############\n");
+    printf("Number Sort : %f --- %f --- %f --- %f --- %f --- %f #############\n", (selection / CLOCKS_PER_SEC), (bubble / CLOCKS_PER_SEC), (merge / CLOCKS_PER_SEC), (invertion / CLOCKS_PER_SEC), (heap / CLOCKS_PER_SEC), (quick / CLOCKS_PER_SEC));
+    printf("Name   Sort : %f --- %f --- %f --- %f --- %f --- %f #############\n", (selection2 / CLOCKS_PER_SEC), (bubble2 / CLOCKS_PER_SEC), (merge2 / CLOCKS_PER_SEC), (invertion2 / CLOCKS_PER_SEC), (heap2 / CLOCKS_PER_SEC), (quick2 / CLOCKS_PER_SEC));
 }
                                                             /////////////////// Main Function
 int main()
@@ -158,10 +224,14 @@ int main()
     clock_t bubbletimer;
     clock_t mergetimer;
     clock_t invertiontimer;
+    clock_t heaptimer;
+    clock_t quicktimer;
     clock_t selectiontimer2;
     clock_t bubbletimer2;
     clock_t mergetimer2;
     clock_t invertiontimer2;
+    clock_t heaptimer2;
+    clock_t quicktimer2;
     char name[] = "Mahmut Alperen Ruhbas";
     char num[] = {2, 0, 1, 8, 5, 5, 6, 0, 6, 0};
     int SIZEOFNUMBER = sizeof(num) / sizeof(num[0]);
@@ -221,8 +291,36 @@ int main()
                                                                                             insertion_sort(insertionname, SIZEOFNAME);
                                                                                         invertiontimer2 = (double)clock()-invertiontimer2;
                                                                                             name_printer(insertionname, SIZEOFNAME, ((double)invertiontimer2), sorttype);
+                                                            /////////////////// Heap Sort
+                                                                memset(sorttype, 0, sizeof(sorttype));
+                                                                strcat(sorttype, "Heap");
+                                                                char heapname[SIZEOFNAME], heapnumber[SIZEOFNUMBER];
+                                                                strcpy(heapname, name);
+                                                                memcpy(heapnumber, num, SIZEOFNUMBER);
+                                                                heaptimer = (double)clock();
+                                                                    heap_sort(heapnumber, SIZEOFNUMBER);
+                                                                heaptimer = (double)clock()-heaptimer;
+                                                                    number_printer(heapnumber, SIZEOFNUMBER, ((double)heaptimer), sorttype);
+                                                                heaptimer2 = (double)clock();
+                                                                    heap_sort(heapname, SIZEOFNAME);
+                                                                heaptimer2 = (double)clock()-heaptimer2;
+                                                                    name_printer(heapname, SIZEOFNAME, ((double)heaptimer2), sorttype);
+                                                            /////////////////// Quick Sort
+                                            memset(sorttype, 0, sizeof(sorttype));
+                                            strcat(sorttype, "Quick");
+                                            char quickname[SIZEOFNAME], quicknumber[SIZEOFNUMBER];
+                                            strcpy(quickname, name);
+                                            memcpy(quicknumber, num, SIZEOFNUMBER);
+                                            quicktimer = (double)clock();
+                                                quick_sort(quicknumber, 0, SIZEOFNUMBER - 1);
+                                            quicktimer = (double)clock()-quicktimer;
+                                                number_printer(quicknumber, SIZEOFNUMBER, ((double)quicktimer), sorttype);
+                                            quicktimer2 = (double)clock();
+                                                quick_sort(quickname, 0, SIZEOFNAME - 1);
+                                            quicktimer2 = (double)clock()-quicktimer2;
+                                                name_printer(quickname, SIZEOFNAME, ((double)quicktimer2), sorttype);
 /////////////////// Listing all sorting performance
-                performance_list(((double)selectiontimer), ((double)bubbletimer), ((double)mergetimer), ((double)invertiontimer), ((double)selectiontimer2), ((double)bubbletimer2), ((double)mergetimer2), ((double)invertiontimer2));
+                performance_list(((double)selectiontimer), ((double)bubbletimer), ((double)mergetimer), ((double)invertiontimer), ((double)heaptimer), ((double)quicktimer), ((double)selectiontimer2), ((double)bubbletimer2), ((double)mergetimer2), ((double)invertiontimer2), ((double)heaptimer2), ((double)quicktimer2));
                 printf("\nMahmut Alperen Ruhbas ----- 2018556060\n");
     return 0;
 }

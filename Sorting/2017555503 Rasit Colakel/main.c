@@ -240,6 +240,133 @@ void bubbleSortByName(char name[], int size) {
 
 /* END Bubble Sort for Name Array*/
 
+/* Quick Sort for Number Array */
+
+int partitionByNumber(int num[], int low, int high) {
+
+   char pivot = num[high];
+
+   int i = low - 1;
+
+   for (int j = low; j < high; j++) {
+      if (num[j] < pivot) {
+         i++;
+         swapNum( & num[i], & num[j]);
+      }
+   }
+
+   swapNum( & num[i + 1], & num[high]);
+   return i + 1;
+}
+
+void quickSortByNumber(int num[], int low, int high) {
+   int pivot;
+   if (low < high) {
+      pivot = partitionByNumber(num, low, high);
+      quickSortByNumber(num, low, pivot - 1);
+      quickSortByNumber(num, pivot + 1, high);
+   }
+}
+
+/* End Quick Sort for Number Array 
+Quick Sort for Name Array */
+
+int partitionByName(char name[], int low, int high) {
+
+   int pivot = name[high];
+
+   int i = low - 1;
+
+   for (int j = low; j < high; j++) {
+      if (name[j] < pivot) {
+         i++;
+         swapChar( & name[i], & name[j]);
+      }
+   }
+
+   swapChar( & name[i + 1], & name[high]);
+   return i + 1;
+}
+
+void quickSortByName(char name[], int low, int high) {
+   int pivot;
+   if (low < high) {
+      pivot = partitionByName(name, low, high);
+      quickSortByName(name, low, pivot - 1);
+      quickSortByName(name, pivot + 1, high);
+   }
+}
+
+/* End Quick Sort for Name Array 
+Heap Sort for Number Array */
+
+void heapifyByNumber(int num[], int size, int root) {
+
+   int largest = root;
+   int left = 2 * root + 1;
+   int right = 2 * root + 2;
+
+   if (size > left && num[left] > num[largest])
+      largest = left;
+   if (size > right && num[right] > num[largest])
+      largest = right;
+
+   if (largest != root) {
+      swapNum( & num[largest], & num[root]);
+
+      heapifyByNumber(num, size, largest);
+   }
+}
+
+void heapSortByNumber(int num[], int size) {
+
+   for (int i = size / 2 - 1; i >= 0; i--) {
+      heapifyByNumber(num, size, i);
+   }
+
+   for (int i = size - 1; i > 0; i--) {
+      swapNum( & num[0], & num[i]);
+
+      heapifyByNumber(num, i, 0);
+   }
+}
+
+/* End Heap Sort for Number Array 
+Heap Sort for Name Array */
+
+void heapifyByName(char name[], int size, int root) {
+
+   int largest = root;
+   int left = 2 * root + 1;
+   int right = 2 * root + 2;
+
+   if (size > left && name[left] > name[largest])
+      largest = left;
+   if (size > right && name[right] > name[largest])
+      largest = right;
+
+   if (largest != root) {
+      swapChar( & name[largest], & name[root]);
+
+      heapifyByName(name, size, largest);
+   }
+}
+
+void heapSortByName(char name[], int size) {
+
+   for (int i = size / 2 - 1; i >= 0; i--) {
+      heapifyByName(name, size, i);
+   }
+
+   for (int i = size - 1; i > 0; i--) {
+      swapChar( & name[0], & name[i]);
+
+      heapifyByName(name, i, 0);
+   }
+}
+
+/* End Heap Sort for Number Array */
+
 int main(int argc, char
     const * argv[]) {
     int num[] = {
@@ -384,7 +511,69 @@ int main(int argc, char
     printf("\nMerge sort for name array : \n");
     printf("%s\n", name4);
     printf("Time = %f\n\n", total);
-    
 
-    return 0;
+   int number5[] = {
+      2,
+      1,
+      0,
+      8,
+      3,
+      0,
+      1,
+      9,
+      0,
+      4
+   };
+   char name5[] = "rasit colakel";
+   start = clock();
+   quickSortByNumber(number5, 0, sizeofNumber - 1);
+   end = clock();
+   total = (double)(end - start) / CLOCKS_PER_SEC;
+
+   printf("\nQuick sort for number array: \n");
+   printArray(number5, sizeofNumber);
+   printf("Time =  %f\n", total);
+
+   start = clock();
+   quickSortByName(name5, 0, sizeName - 1);
+   end = clock();
+   total = (double)(end - start) / CLOCKS_PER_SEC;
+
+   printf("\nQuick sort for name array: \n");
+   printf("%s\n", name5);
+   printf("Time =  %f\n", total);
+
+   int number6[] = {
+      2,
+      1,
+      0,
+      8,
+      3,
+      0,
+      1,
+      9,
+      0,
+      4
+   };
+   char name6[] = "rasit colakel";
+
+   start = clock();
+   heapSortByNumber(number6, sizeofNumber);
+   end = clock();
+   total = (double)(end - start) / CLOCKS_PER_SEC;
+
+   printf("\nHeap sort for number array: \n");
+   printArray(number6, sizeofNumber);
+   printf("Time =  %f\n", total);
+
+   start = clock();
+   heapSortByName(name6, sizeName);
+   end = clock();
+   total = (double)(end - start) / CLOCKS_PER_SEC;
+
+   printf("\nHeap sort for name array: \n");
+   printf("%s\n", name6);
+   printf("Time =  %f\n", total);
+
+   return 0;
 }

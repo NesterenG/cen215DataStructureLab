@@ -1,6 +1,5 @@
 #include<stdio.h>
 #include<time.h>
-#include<sys\timeb.h>
 #include<stdlib.h>
 int no[] = { 2,0,1,6,5,5,6,5,0,6 }; //size=10;
 char name[] = "BUGRA SARIKAYA"; //size=15-1=14
@@ -30,8 +29,7 @@ void insertion_sort_char(char name[], int size) {
 		name[j + 1] = mem;
 	}
 }
-void merge_int(int no[], int l, int m, int r)
-{
+void merge_int(int no[], int l, int m, int r){
 	int i, j, k, n1, n2;
 	n1 = m - l + 1;
 	n2 = r - m;
@@ -74,8 +72,7 @@ void merge_int(int no[], int l, int m, int r)
 	}
 }
 
-void merge_sort_int(int no[], int l, int r)
-{
+void merge_sort_int(int no[], int l, int r){
 	if (l < r) {
 		int m = l + (r - l) / 2;
 
@@ -85,8 +82,7 @@ void merge_sort_int(int no[], int l, int r)
 		merge_int(no, l, m, r);
 	}
 }
-void merge_char(char name[], int l, int m, int r)
-{
+void merge_char(char name[], int l, int m, int r){
 	int i, j, k, n1, n2;
 	n1 = m - l + 1;
 	n2 = r - m;
@@ -127,8 +123,7 @@ void merge_char(char name[], int l, int m, int r)
 		k++;
 	}
 }
-void merge_sort_char(char name[], int l, int r)
-{
+void merge_sort_char(char name[], int l, int r){
 	if (l < r) {
 		int m = l + (r - l) / 2;
 
@@ -138,20 +133,105 @@ void merge_sort_char(char name[], int l, int r)
 		merge_char(name, l, m, r);
 	}
 }
-void swap_int(int *element_1, int *element_2)
-{
+void swap_int(int *element_1, int *element_2){
 	int temp = *element_1;
 	*element_1 = *element_2;
 	*element_2 = temp;
 }
-void swap_char(char *element_1, char *element_2)
-{
+void swap_char(char *element_1, char *element_2){
 	char temp = *element_1;
 	*element_1 = *element_2;
 	*element_2 = temp;
 }
-void bubble_sort_int(int no[], int n)
-{
+void heapify_int(int no[], int n, int i) {
+	int largest = i;
+	int left = 2 * i + 1;
+	int right = 2 * i + 2;
+	if (left < n && no[left] > no[largest])
+		largest = left;
+	if (right < n && no[right] > no[largest])
+		largest = right;
+	if (largest != i) {
+		swap_int(&no[i], &no[largest]);
+		heapify_int(no, n, largest);
+	}
+}
+void heap_sort_int(int no[], int n) {
+	for (int i = n / 2 - 1; i >= 0; i--)
+		heapify_int(no, n, i);
+	for (int i = n - 1; i >= 0; i--) {
+		swap_int(&no[0], &no[i]);
+		heapify_int(no, i, 0);
+	}
+}
+void heapify_char(char name[], int n, int i) {
+	int largest = i;
+	int left = 2 * i + 1;
+	int right = 2 * i + 2;
+	if (left < n && name[left] > name[largest])
+		largest = left;
+	if (right < n && name[right] > name[largest])
+		largest = right;
+	if (largest != i) {
+		swap_char(&name[i], &name[largest]);
+		heapify_char(name, n, largest);
+	}
+}
+void heap_sort_char(char name[], int n) {
+	for (int i = n / 2 - 1; i >= 0; i--)
+		heapify_char(name, n, i);
+	for (int i = n - 1; i >= 0; i--) {
+		swap_char(&name[0], &name[i]);
+		heapify_char(name, i, 0);
+	}
+}
+int partition_int(int no[], int low, int high){
+	int pivot = no[high];
+	int i = (low - 1);
+
+	for (int j = low; j <= high - 1; j++)
+	{
+		if (no[j] < pivot)
+		{
+			i++;
+			swap_int(&no[i], &no[j]);
+		}
+	}
+	swap_int(&no[i + 1], &no[high]);
+	return (i + 1);
+}
+void quick_sort_int(int no[], int low, int high){
+	if (low < high)
+	{
+		int pi = partition_int(no, low, high);
+		quick_sort_int(no, low, pi - 1);
+		quick_sort_int(no, pi + 1, high);
+	}
+}
+int partition_char(char name[], int low, int high){
+	int pivot = name[high];
+	int i = (low - 1);
+
+	for (int j = low; j <= high - 1; j++)
+	{
+		if (name[j] < pivot)
+		{
+			i++;
+			swap_char(&name[i], &name[j]);
+		}
+	}
+	swap_char(&name[i + 1], &name[high]);
+	return (i + 1);
+}
+void quick_sort_char(char name[], int low, int high){
+	if (low < high)
+	{
+		int pi = partition_char(name, low, high);
+		quick_sort_char(name, low, pi - 1);
+		quick_sort_char(name, pi + 1, high);
+	}
+}
+void bubble_sort_int(int no[], int n){
 	int i, j;
 	for (i = 0; i < n - 1; i++)
 
@@ -159,15 +239,14 @@ void bubble_sort_int(int no[], int n)
 			if (no[j] > no[j + 1])
 				swap_int(&no[j], &no[j + 1]);
 }
-void bubble_sort_char(char name[], int n){
+void bubble_sort_char(char name[], int n) {
 	int i, j;
 	for (i = 0; i < n - 1; i++)
 		for (j = 0; j < n - i - 1; j++)
 			if (name[j] > name[j + 1])
 				swap_char(&name[j], &name[j + 1]);
 }
-void selection_sort_int(int no[], int n)
-{
+void selection_sort_int(int no[], int n){
 	int i, j, min_idx;
 	for (i = 0; i < n - 1; i++)
 	{
@@ -178,8 +257,7 @@ void selection_sort_int(int no[], int n)
 		swap_int(&no[min_idx], &no[i]);
 	}
 }
-void selection_sort_char(char name[], int n)
-{
+void selection_sort_char(char name[], int n){
 	int i, j, min_idx;
 	for (i = 0; i < n - 1; i++)
 	{
@@ -206,76 +284,112 @@ void show_original(int size_no, int size_name, int no[], char name[]) {
 	show_name(name, size_name);
 }
 void establish_insertion_sort(int size_no, int size_name, int no[], char name[]) {
-	struct timeb begin, end;
+	clock_t begin, end;
 	printf("---Insertion Sort---");
 	printf("\n");
-	ftime(&begin);
+	begin = clock();
 	insertion_sort_int(no, size_no);
-	ftime(&end);
+	end = clock();
 	show_no(no, size_no);
 	printf("\n");
-	printf("Time: %d ms", (int)((end.time - begin.time)*1000 + (end.millitm - begin.millitm)));
+	printf("Time: %f", (float)(end-begin)/CLOCKS_PER_SEC);
 	printf("\n");
-	ftime(&begin);
+	begin = clock();
 	insertion_sort_char(name, size_name);
-	ftime(&end);
+	end = clock();
 	show_name(name, size_name);
 	printf("\n");
-	printf("Time: %d ms", (int)((end.time - begin.time) * 1000 + (end.millitm - begin.millitm)));
+	printf("Time: %f", (float)(end - begin) / CLOCKS_PER_SEC);
 }
 void establish_merge_sort(int size_no, int size_name, int no[], char name[]) {
-	struct timeb begin, end;
+	clock_t begin, end;
 	printf("---Merge Sort---");
 	printf("\n");
-	ftime(&begin);
+	begin = clock();
 	merge_sort_int(no, 0, size_no - 1);
-	ftime(&end);
+	end = clock();
 	show_no(no, size_no);
 	printf("\n");
-	printf("Time: %d ms", (int)((end.time - begin.time) * 1000 + (end.millitm - begin.millitm)));
+	printf("Time: %f", (float)(end - begin) / CLOCKS_PER_SEC);
 	printf("\n");
-	ftime(&begin);
+	begin = clock();
 	merge_sort_char(name, 0, size_name - 1);
-	ftime(&end);
+	end = clock();
 	show_name(name, size_name);
 	printf("\n");
-	printf("Time: %d ms", (int)((end.time - begin.time) * 1000 + (end.millitm - begin.millitm)));
+	printf("Time: %f", (float)(end - begin) / CLOCKS_PER_SEC);
 }
 void establish_bubble_sort(int size_no, int size_name, int no[], char name[]) {
-	struct timeb begin, end;
+	clock_t begin, end;
 	printf("---Bubble Sort---");
 	printf("\n");
-	ftime(&begin);
+	begin = clock();
 	bubble_sort_int(no, size_no);
-	ftime(&end);
+	end = clock();
 	show_no(no, size_no);
 	printf("\n");
-	printf("Time: %d ms", (int)((end.time - begin.time) * 1000 + (end.millitm - begin.millitm)));
+	printf("Time: %f", (float)(end - begin) / CLOCKS_PER_SEC);
 	printf("\n");
-	ftime(&begin);
+	begin = clock();
 	bubble_sort_char(name, size_name);
-	ftime(&end);
+	end = clock();
 	show_name(name, size_name);
 	printf("\n");
-	printf("Time: %d ms", (int)((end.time - begin.time) * 1000 + (end.millitm - begin.millitm)));
+	printf("Time: %f", (float)(end - begin) / CLOCKS_PER_SEC);
 }
 void establish_selection_sort(int size_no, int size_name, int no[], char name[]) {
-	struct timeb begin, end;
+	clock_t begin, end;
 	printf("---Selection Sort---");
 	printf("\n");
-	ftime(&begin);
+	begin = clock();
 	selection_sort_int(no, size_no);
-	ftime(&end);
+	end = clock();
 	show_no(no, size_no);
 	printf("\n");
-	printf("Time: %d ms", (int)((end.time - begin.time) * 1000 + (end.millitm - begin.millitm)));
+	printf("Time: %f", (float)(end - begin) / CLOCKS_PER_SEC);
 	printf("\n");
-	ftime(&begin);
+	begin = clock();
 	selection_sort_char(name, size_name);
-	ftime(&end);
+	end = clock();
 	show_name(name, size_name);
 	printf("\n");
-	printf("Time: %d ms", (int)((end.time - begin.time) * 1000 + (end.millitm - begin.millitm)));
+	printf("Time: %f", (float)(end - begin) / CLOCKS_PER_SEC);
+}
+void establish_selection_quick_sort(int size_no, int size_name, int no[], char name[]) {
+	clock_t begin, end;
+	printf("---Quick Sort---");
+	printf("\n");
+	begin = clock();
+	quick_sort_int(no, 0, size_no-1);
+	end = clock();
+	show_no(no, size_no);
+	printf("\n");
+	printf("Time: %f", (float)(end - begin) / CLOCKS_PER_SEC);
+	printf("\n");
+	begin = clock();
+	quick_sort_char(name, 0, size_name-1);
+	end = clock();
+	show_name(name, size_name);
+	printf("\n");
+	printf("Time: %f", (float)(end - begin) / CLOCKS_PER_SEC);
+}
+void establish_selection_heap_sort(int size_no, int size_name, int no[], char name[]) {
+	clock_t begin, end;
+	printf("---Heap Sort---");
+	printf("\n");
+	begin = clock();
+	heap_sort_int(no, size_no);
+	end = clock();
+	show_no(no, size_no);
+	printf("\n");
+	printf("Time: %f", (float)(end - begin) / CLOCKS_PER_SEC);
+	printf("\n");
+	begin = clock();
+	heap_sort_char(name, size_name);
+	end = clock();
+	show_name(name, size_name);
+	printf("\n");
+	printf("Time: %f", (float)(end - begin) / CLOCKS_PER_SEC);
 }
 void redefinition_no() {
 	no[0] = 2;
@@ -314,7 +428,7 @@ int main() {
 	int size_no = sizeof(no) / sizeof(no[0]);
 	int size_name = (sizeof(name) / sizeof(name[0])) - 1;
 	show_original(size_no, size_name, no, name);
-	printf("\n\n");
+	printf("\nn");
 	establish_insertion_sort(size_no, size_name, no, name);
 	printf("\n\n");
 	redefinition();
@@ -325,6 +439,12 @@ int main() {
 	printf("\n\n");
 	redefinition();
 	establish_selection_sort(size_no, size_name, no, name);
+	printf("\n\n");
+	redefinition();
+	establish_selection_quick_sort(size_no, size_name, no, name);
+	printf("\n\n");
+	redefinition();
+	establish_selection_heap_sort(size_no, size_name, no, name);
 	printf("\n\n");
 	return 0;
 

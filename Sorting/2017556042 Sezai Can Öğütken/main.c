@@ -253,6 +253,172 @@ mergeSort_C (char arr[], int l, int r)
 }
 
 void
+
+quicksort_N(int num[], int x, int y)
+{
+	int z, w, pivot, temp;
+
+	if (x < y) 
+	{
+		pivot = x;
+		z = x;
+		w = y;
+
+		while (z < w) 
+		{
+			while (num[z] <= num[pivot] && x < y)
+				z++;
+			while (num[w] > num[pivot])
+				w--;
+				
+			if (z < w)
+			{
+				temp = num[z];
+				num[z] = num[w];
+				num[w] = temp;
+			}
+		}
+
+		temp = num[pivot];
+		num[pivot] = num[w];
+		num[w] = temp;
+		quicksort_N(num, x, w - 1);
+		quicksort_N(num, w + 1, y);
+
+	}
+}
+
+void
+quicksort_C(char name[], int x, int y)
+{
+	int z, w, pivot, temp;
+
+	if (x < y) 
+	{
+		pivot = x;
+		z = x;
+		w = y;
+
+		while (z < w) 
+		{
+			while (name[z] <= name[pivot] && x < y)
+				z++;
+			while (name[w] > name[pivot])
+				w--;
+				
+			if (z < w)
+			{
+				temp = name[z];
+				name[z] = name[w];
+				name[w] = temp;
+			}
+		}
+
+		temp = name[pivot];
+		name[pivot] = name[w];
+		name[w] = temp;
+		quicksort_C(name, x, w - 1);
+		quicksort_C(name, w + 1, y);
+
+	}
+}
+
+void
+heap_number(int num[], int size, int i)
+{
+	int temp;
+	int x = i;
+	int z = 2 * i + 1;
+	int c = 2 * i + 2;
+
+	if (z < size && num[z] >num[x])
+	{
+		x = z;
+	}
+	
+	if (c < size && num[c] > num[x])
+	{	
+	    x = c;
+	}   
+
+	if (x!= i)
+	{
+		temp = num[i];
+		num[i] = num[x];
+		num[x] = temp;
+		heap_number(num, size, x);
+	}
+}
+
+void
+heap_N(int num[], int size)
+{
+    
+	int temp, i;
+	
+	for (i = size / 2 - 1; i >= 0; i--)
+	{
+		heap_number(num, size, i);
+	}
+	
+	for (i = size - 1; i >= 0; i--)
+	{
+		temp = num[0];
+		num[0] = num[i];
+		num[i] = temp;
+		heap_number(num, i, 0);
+	}
+}
+
+void
+heap_name(char name[], int size, int i)
+{
+	int temp;
+	int x = i;
+	int z = 2 * i + 1;
+	int c = 2 * i + 2;
+
+	if (z < size && name[z] > name[x])
+	{
+		x = z;
+	}
+	
+	if (c < size && name[c] > name[x])
+	{	
+	    x = c;
+	}   
+
+	if (x!= i)
+	{
+		temp = name[i];
+		name[i] = name[x];
+		name[x] = temp;
+		heap_name(name, size, x);
+	}
+}
+
+void
+heap_C(char name[], int size)
+{
+    
+	int temp, i;
+	
+	for (i = size / 2 - 1; i >= 0; i--)
+	{
+		heap_name(name, size, i);
+	}
+	
+	for (i = size - 1; i >= 0; i--)
+	{
+		temp = name[0];
+		name[0] = name[i];
+		name[i] = temp;
+		heap_name(name, i, 0);
+	}
+}
+
+void
+
 printArray (int arr[], int n)
 {
   int i;
@@ -352,6 +518,50 @@ main ()
   printf ("%s\n", name3);
   printf ("Time of char Merge Sort: %f\n\n",
 	  ((double) start) / CLOCKS_PER_SEC);
+
+ //-----------------
+ 
+ //Quick
+  int num4[] = { 2, 0, 1, 7, 5, 5, 6, 0, 4, 2 };
+  char name4[] = "can ogutken";
+
+  int n4 = sizeof (num4) / sizeof (num4[0]);
+  int charSize4 = strlen (name4);
+
+  quicksort_N(num4, 0, n3 - 1);
+  start = clock () - start;
+
+  printArray (num4, n4);
+  printf ("Time of Quick Sort: %f\n", ((double) start) / CLOCKS_PER_SEC);
+
+  quicksort_C(name4, 0, charSize3 - 1);
+  start = clock () - start;
+
+  printf ("%s\n", name4);
+  printf ("Time of char Quick Sort: %f\n\n",
+	  ((double) start) / CLOCKS_PER_SEC);
+ //-----------------
+ 
+ //Heap
+  int num5[] = { 2, 0, 1, 7, 5, 5, 6, 0, 4, 2 };
+  char name5[] = "can ogutken";
+
+  int n5 = sizeof (num5) / sizeof (num5[0]);
+  int charSize5 = strlen (name5);
+
+  heap_N(num5, n5);
+  start = clock () - start;
+
+  printArray (num5, n5);
+  printf ("Time of Heap Sort: %f\n", ((double) start) / CLOCKS_PER_SEC);
+
+  heap_C(name5, charSize5);
+  start = clock () - start;
+
+  printf ("%s\n", name5);
+  printf ("Time of char Heap Sort: %f\n\n",
+	  ((double) start) / CLOCKS_PER_SEC);
+
 
   return 0;
 }

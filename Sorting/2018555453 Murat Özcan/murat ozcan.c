@@ -4,7 +4,19 @@
 #include <string.h>
 
 
-
+void swap(int* a, int* b) 
+{ 
+    int t = *a; 
+    *a = *b; 
+    *b = t; 
+} 
+void swapchar(char* a, char* b) 
+{ 
+    int t = *a; 
+    *a = *b; 
+    *b = t; 
+} 
+  
 //Bubble sort
 void bubbleSort(int arr[], int size){
      int temp;
@@ -202,6 +214,129 @@ void mergesortchar(char *Arr, int start, int end) {
 	}
 }
 
+ // quickSort
+int quick (int arr[], int low, int high) 
+{ 
+    int pivot = arr[high];    // pivot 
+    int i = (low - 1); 
+  
+    for (int j = low; j <= high- 1; j++) 
+    { 
+         
+        if (arr[j] < pivot) 
+        { 
+            i++;   
+            swap(&arr[i], &arr[j]); 
+        } 
+    } 
+    swap(&arr[i + 1], &arr[high]); 
+    return (i + 1); 
+} 
+int quickchar (char arr[], int low, int high) 
+{ 
+    int pivot = arr[high];    // pivot 
+    int i = (low - 1);  
+  
+    for (int j = low; j <= high- 1; j++) 
+    { 
+        if (arr[j] < pivot) 
+        { 
+            i++;     
+            swapchar(&arr[i], &arr[j]); 
+        } 
+    } 
+    swapchar(&arr[i + 1], &arr[high]); 
+    return (i + 1); 
+} 
+  
+void quickSort(int arr[], int low, int high) 
+{ 
+    if (low < high) 
+    { 
+
+        int pi = quick(arr, low, high); 
+  
+ 
+        quickSort(arr, low, pi - 1); 
+        quickSort(arr, pi + 1, high); 
+    } 
+} 
+void quickSortchar(char arr[], int low, int high) 
+{ 
+    if (low < high) 
+    { 
+        
+        int pi = quickchar(arr, low, high); 
+        quickSortchar(arr, low, pi - 1); 
+        quickSortchar(arr, pi + 1, high); 
+    } 
+} 
+
+//heapSort
+void heapify(int arr[], int n, int i) 
+{ 
+    int largest = i;  
+    int l = 2*i + 1; 
+    int r = 2*i + 2; 
+  
+    if (l < n && arr[l] > arr[largest]) 
+        largest = l; 
+  
+    if (r < n && arr[r] > arr[largest]) 
+        largest = r; 
+  
+    if (largest != i) 
+    { 
+        swap(&arr[i], &arr[largest]); 
+  
+        heapify(arr, n, largest); 
+    } 
+} 
+  
+ void heapifychar(char arr[], int n, int i) 
+{ 
+    int largest = i;  
+    int l = 2*i + 1; 
+    int r = 2*i + 2; 
+  
+    if (l < n && arr[l] > arr[largest]) 
+        largest = l; 
+  
+    if (r < n && arr[r] > arr[largest]) 
+        largest = r; 
+  
+    if (largest != i) 
+    { 
+        swapchar(&arr[i], &arr[largest]); 
+  
+        heapifychar(arr, n, largest); 
+    } 
+} 
+void heapSort(int arr[], int n) 
+{ 
+    for (int i = n / 2 - 1; i >= 0; i--) 
+        heapify(arr, n, i); 
+  
+    for (int i=n-1; i>0; i--) 
+    { 
+        swap(&arr[0], &arr[i]); 
+  
+        heapify(arr, i, 0); 
+    } 
+} 
+void heapSortchar(char arr[], char n) 
+{ 
+    for (int i = n / 2 - 1; i >= 0; i--) 
+        heapifychar(arr, n, i); 
+  
+    for (int i=n-1; i>0; i--) 
+    { 
+        swapchar(&arr[0], &arr[i]); 
+  
+        heapifychar(arr, i, 0); 
+    } 
+} 
+
 
  void prints(int arr[], int size){
       int a;
@@ -282,7 +417,36 @@ void mergesortchar(char *Arr, int start, int end) {
       t = (double)clock()-t;
       printf("\nSorted name in Insertion Sort : %s\n",name3);
       printf("Running time of Insertion Sort: %f\n",((double)t) / CLOCKS_PER_SEC);
+      
+      // quickSort
+      int ar4[] ={2,0,1,8,5,5,5,4,5,3} ;
+      int p = sizeof(arr)/sizeof(ar4[0]);
+      char name5[] = "murat ozcan";
+      int char6 = strlen(name5);
+      t = (double)clock();
 
+      quickSort(ar4,0, p-1);
+      printf("\nSorted numbers in   quick Sort:");
+      prints(ar4,p);
+      quickSortchar(name5,0,char6-1);
+      t = (double)clock()-t;
+      printf("\nSorted name in  quick Sort : %s\n",name5);
+      printf("Running time of quick Sort: %f \n",((double)t) / CLOCKS_PER_SEC);
 
-      return 0;
- }
+     //heapSort
+    int ar8[] = {2,0,1,8,5,5,5,4,5,3}; 
+    int n = sizeof(arr)/sizeof(ar8[0]);
+    char name8[] = "murat ozcan";
+    int char8 = strlen(name8);
+    t = (double)clock();
+
+    
+    heapSort(ar8, n); 
+    printf("\nSorted array in heapSort:"); 
+    prints(ar8, n); 
+    heapSortchar(name8,char8);
+    t = (double)clock()-t;
+    printf("\nSorted name in heapSort: %s \n ",name8);
+    printf("Running time of heapSort: %f \n",((double)t) / CLOCKS_PER_SEC);
+
+    return 0;

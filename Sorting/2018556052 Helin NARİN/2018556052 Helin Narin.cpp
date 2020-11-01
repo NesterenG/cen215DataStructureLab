@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<time.h>
+#include<math.h>
 
 int argc;
 char argv[100];
@@ -101,7 +102,7 @@ void bubblesortchar(char arr[]) {
 				temp = arr[j];
 				arr[j] = arr[j + 1];
 				arr[j + 1] = temp;
-            }
+			}
 		}
 	}
 }
@@ -122,7 +123,7 @@ void merge(int arr[], int h, int l, int n) {
 	a2 = n - l;
 	int L[a1], R[a2];
 	for (i = 0; i < a1; i++) {
-		L[i] = arr[h+i];
+		L[i] = arr[h + i];
 	}
 	for (j = 0; j < a2; j++) {
 		R[j] = arr[l + 1 + j];
@@ -164,7 +165,7 @@ void printarraymergesortchar(char arr[], int measure) {
 	int i;
 	for (i = 0; i < measure; i++) {
 		printf("%c\t", arr[i]);
-}
+	}
 	printf("\n");
 }
 void mergechar(char arr[], int h, int l, int n) {
@@ -173,7 +174,8 @@ void mergechar(char arr[], int h, int l, int n) {
 	a2 = n - l;
 	int L[a1], R[a2];
 	for (i = 0; i < a1; i++) {
-		L[i] = arr[h+i];}
+		L[i] = arr[h + i];
+	}
 	for (j = 0; j < a2; j++) {
 		R[j] = arr[l + 1 + j];
 	}
@@ -189,7 +191,7 @@ void mergechar(char arr[], int h, int l, int n) {
 		}
 		k++;
 	}
-	
+
 	while (i < a1) {
 		arr[k] = L[i];
 		k++;
@@ -199,7 +201,7 @@ void mergechar(char arr[], int h, int l, int n) {
 		arr[k] = R[j];
 		k++;
 		j++;
-  }
+	}
 }
 void mergesortchar(char arr[], int h, int n) {
 
@@ -208,6 +210,132 @@ void mergesortchar(char arr[], int h, int n) {
 		mergesortchar(arr, h, l);
 		mergesortchar(arr, l + 1, n);
 		mergechar(arr, h, l, n);
+	}
+}
+void swap(int* h, int* n) {
+	int temp = *h;
+	*h = *n;
+	*n = temp;
+}
+void charswap(char* h, char* n) {
+	char temp = *h;
+	*h = *n;
+	*n = temp;
+}
+void printarray(int number[], int measure) {
+	for (int i = 0; i < measure; i++) {
+		printf("%d\t", number[i]);
+	}
+	printf("\n");
+}
+void printarraychar(char name[], int measure) {
+	for (int i = 0; i < measure; i++) {
+		printf("%c\t", name[i]);
+	}
+	printf("\n");
+}
+
+int partition(int array[], int low, int high) {
+
+  int pivot = array[high];
+  int i = (low - 1);
+  int j;
+
+  for (j = low; j < high; j++) {
+    if (array[j] <= pivot) {
+      i++;
+      swap(&array[i], &array[j]);
+    }
+  }
+
+  swap(&array[i + 1], &array[high]);
+  return (i + 1);
+}
+
+void quickSort(int array[], int low, int high) {
+  if (low < high) {
+
+    int pi = partition(array, low, high);
+
+    quickSort(array, low, pi - 1);
+
+    quickSort(array, pi + 1, high);
+  }
+}
+
+char partitionChar(char array[], int low, int high) {
+
+  int pivot = array[high];
+  int i = (low - 1);
+  int j;
+
+  for (j = low; j < high; j++) {
+    if (array[j] <= pivot) {
+      i++;
+      charswap(&array[i], &array[j]);
+    }
+  }
+
+  charswap(&array[i + 1], &array[high]);
+  return (i + 1);
+}
+
+void quickSortName(char array[], int low, int high) {
+  if (low < high) {
+
+    int pi = partitionChar(array, low, high);
+
+    quickSortName(array, low, pi - 1);
+
+    quickSortName(array, pi + 1, high);
+  }
+}
+// heapsort
+void heapify(int number[], int measure, int i) {
+	int largest = i;
+	int leftchild = 2 * i + 1;
+	int rightchild = 2 * i + 2;
+
+	if (number[leftchild] > number[largest] && leftchild < measure)
+		largest = leftchild;
+	if (number[rightchild] > number[largest] && rightchild < measure)
+		largest = rightchild;
+	if (largest != i) {
+		swap(&number[i], &number[largest]);
+		heapify(number, measure, largest);
+	}
+}
+void heapsort(int number[], int measure) {
+	for (int i = measure / 2 - 1; i >= 0; i--) {
+		heapify(number, measure, i);
+	}
+	for (int i = measure - 1; i > 0; i--) {
+		swap(&number[0], &number[i]);
+		heapify(number, i, 0);
+	}
+}
+void charheapify(char name[], int measure, int i) {
+	int largest = i;
+	int leftchild = 2 * i + 1;
+	int rightchild = 2 * i + 2;
+
+	if (name[leftchild] > name[largest] && leftchild < measure)
+		largest = leftchild;
+	if (name[rightchild] > name[largest] && rightchild < measure)
+		largest = rightchild;
+	if (largest != i) {
+		charswap(&name[i], &name[largest]);
+		charheapify(name, measure, largest);
+	}
+}
+
+void charheapsort(char name[], int measure) {
+	for (int i = measure / 2 - 1; i >= 0; i--) {
+		charheapify(name, measure, i);
+	}
+	for (int i = measure - 1; i > 0; i--) {
+		charswap(&name[0], &name[i]);
+		charheapify(name, i, 0);
 	}
 }
 
@@ -256,18 +384,40 @@ int main() {
 	printchararray(name);
 	end = clock();
 	time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
-	
+
 
 	printf("------Merge sort time------\n");
-	mergesort(number, 0, size-1);
+	mergesort(number, 0, size - 1);
 	printarraymergesort(number, size);
 
 	printf("Merge sort char time:%f\n", time_used);
 	mergesortchar(name, 0, size - 1);
-	printarraymergesortchar(name, size+1);
+	printarraymergesortchar(name, size + 1);
 	end = clock();
 	time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
-	
+
+
+	printf("------quick sort time------\n");
+	start = clock();
+	quickSort(number, 0, size - 1);
+	printarray(number, size);
+
+	printf("quick sort char time:%f\n", time_used);
+	quickSortName(name, 0, size - 1);
+	printarraychar(name, size + 1);
+	end = clock();
+	time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
+
+	printf("------heap sort time------\n");
+	start = clock();
+	heapsort(number, size);
+	printarray(number, size);
+
+	printf("heap sort char time:%f\n", time_used);
+	charheapsort(name, size);
+	printarraychar(name, size + 1);
+	end = clock();
+	time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
 
 	return 0;
 

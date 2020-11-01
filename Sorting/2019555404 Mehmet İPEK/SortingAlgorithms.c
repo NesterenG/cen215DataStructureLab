@@ -110,6 +110,66 @@ void MergeSort(int array[], int left, int right) {
 	}
 }
 
+void QuickSort(int array[], int first, int last) {
+
+	if (first < last) {
+
+		int pivot = last;
+		int low = first;
+		int high = last;
+
+		while (1) {
+
+			while (array[low] <= array[pivot])
+				low++;
+
+			while (array[high] > array[pivot])
+				high--;
+
+			if (low < high)
+				Swap(&array[low], &array[high]);
+			else
+				break;
+		}
+		Swap(&array[high], &array[pivot]);
+		QuickSort(array, first, high - 1);
+		QuickSort(array, high + 1, last);
+	}
+}
+
+void Heapify(int array[], int size, int i) {
+
+	int largest = i;
+	int left = 2 * i + 1;
+	int right = 2 * i + 2;
+
+	if (left < size && array[left] > array[largest])
+		largest = left;
+
+	if (right < size && array[right] > array[largest])
+		largest = right;
+
+	if (largest != i) {
+
+		Swap(&array[i], &array[largest]);
+		Heapify(array, size, largest);
+	}
+}
+
+void HeapSort(int array[], int size) {
+
+	int i;
+
+	for (i = size / 2 - 1; i >= 0; i--)
+		Heapify(array, size, i);
+
+	for (i = size - 1; i > 0; i--) {
+
+		Swap(&array[0], &array[i]);
+		Heapify(array, i, 0);
+	}
+}
+
 int main() {
 	//Definitions
 	clock_t time;
@@ -194,6 +254,46 @@ int main() {
 	time = clock() - time;
 	PrintName(name3, name3Size);
 	printf("Merge Sort took %f seconds to sort my name\n", ((double)time) / CLOCKS_PER_SEC);
+	
+	//Definitions 5
+	int number4[] = { 2,0,1,9,5,5,5,4,0,4};
+	int number4Size = sizeof(number4) / sizeof(number4[0]);
+
+	int name4[] = { 'M','e','h','m','e','t','I','p','e','k' };
+	int name4Size = sizeof(name4) / sizeof(name4[0]);
+
+	//Quick Sort
+	printf("\n\tQuick Sort\n\n");
+	time = clock();
+	QuickSort(number4, 0, number4Size - 1);
+	time = clock() - time;
+	PrintNumber(number4, number4Size);
+	printf("Quick Sort took %f seconds to sort my number \n", ((double)time) / CLOCKS_PER_SEC);
+	time = clock();
+	QuickSort(name4, 0, name4Size - 1);
+	time = clock() - time;
+	PrintName(name4, name4Size);
+	printf("Quick Sort took %f seconds to sort my name \n", ((double)time) / CLOCKS_PER_SEC);
+
+	//Definitions 6
+	int number5[] = { 2,0,1,9,5,5,5,4,0,4};
+	int number5Size = sizeof(number5) / sizeof(number5[0]);
+
+	int name5[] = { 'M','e','h','m','e','t','I','p','e','k' };
+	int name5Size = sizeof(name5) / sizeof(name5[0]);
+
+	//Heap Sort
+	printf("\n\tHeap Sort\n\n");
+	time = clock();
+	HeapSort(number5, number5Size);
+	time = clock() - time;
+	PrintNumber(number5, number5Size);
+	printf("Heap Sort took %f seconds to sort my number \n", ((double)time) / CLOCKS_PER_SEC);
+	time = clock();
+	HeapSort(name5, name5Size);
+	time = clock() - time;
+	PrintName(name5, name5Size);
+	printf("Heap Sort took %f seconds to sort my name \n", ((double)time) / CLOCKS_PER_SEC);
 
 	return 0;
 }

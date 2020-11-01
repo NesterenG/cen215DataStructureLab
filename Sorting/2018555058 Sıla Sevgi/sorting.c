@@ -24,6 +24,18 @@ void merge_N(int* num, int l, int m, int r);
 void mergeSort_L(char* let, int i, int j);
 void merge_L(char* let, int l, int m, int r);
 
+//QuickSort
+void quickSort_N(int* num, int lw, int hg);
+int quickSortPart_N(int* num, int lw, int hg);
+void quickSort_L(char* let, int lw, int hg);
+int quickSortPart_L(char* let, int lw, int hg);
+
+//HeapSort
+void heapSort_N(int* num, int size);
+void heapSortFy_N(int* num, int size, int i);
+void heapSort_L(char* let, int size);
+void heapSortFy_L(char* let, int size, int i);
+
 //Swap
 void swap_N(int* num, int i, int j);
 void swap_L(char* let, int i, int j);
@@ -136,6 +148,61 @@ int main() {
 	rest_L(&name[0], &let[0], size_L);
 	timer = clock();
 	mergeSort_L(&let[0], 0, size_L - 1);
+	timer = clock() - timer;
+	printf("Organized Letter is : ");
+	print_L(&let[0], size_L);
+	printf("\nThe passing time : %f second", (((double)timer) / CLOCKS_PER_SEC));
+<<<<<<< HEAD
+    
+    	//QuickSort ***********************************************
+=======
+	
+	//QuickSort ***********************************************
+>>>>>>> 3634bd7196ad1aa547869f18b487fa8f36fb27e9
+	printf("\n\nPart of Quick Sort	*********************\n");
+
+	//for Number
+	rest_N(&schoolNumber[0], &num[0], size_N);
+	timer = clock();
+	quickSort_N(&num[0], 0, size_N - 1);
+	timer = clock() - timer;
+	printf("Organized Number is : ");
+	print_N(&num[0], size_N);
+	printf("\nThe passing time : %f second", (((double)timer) / CLOCKS_PER_SEC));
+
+	printf("\n");
+
+	//for Letter
+	rest_L(&name[0], &let[0], size_L);
+	timer = clock();
+	quickSort_L(&let[0], 0, size_L - 1);
+	timer = clock() - timer;
+	printf("Organized Letter is : ");
+	print_L(&let[0], size_L);
+	printf("\nThe passing time : %f second", (((double)timer) / CLOCKS_PER_SEC));
+
+<<<<<<< HEAD
+	//HeapSort ***********************************************
+=======
+	//HeapkSort ***********************************************
+>>>>>>> 3634bd7196ad1aa547869f18b487fa8f36fb27e9
+	printf("\n\nPart of Heap Sort	*********************\n");
+
+	//for Number
+	rest_N(&schoolNumber[0], &num[0], size_N);
+	timer = clock();
+	heapSort_N(&num[0], size_N);
+	timer = clock() - timer;
+	printf("Organized Number is : ");
+	print_N(&num[0], size_N);
+	printf("\nThe passing time : %f second", (((double)timer) / CLOCKS_PER_SEC));
+
+	printf("\n");
+
+	//for Letter
+	rest_L(&name[0], &let[0], size_L);
+	timer = clock();
+	heapSort_L(&let[0], size_L);
 	timer = clock() - timer;
 	printf("Organized Letter is : ");
 	print_L(&let[0], size_L);
@@ -362,7 +429,116 @@ void merge_L(char* let, int l, int m, int r) {
 	}
 }
 
+<<<<<<< HEAD
+=======
 
+>>>>>>> 3634bd7196ad1aa547869f18b487fa8f36fb27e9
+//QuickSort		**********************************************
+
+//for Number 
+void quickSort_N(int* num, int lw, int hg) {
+	if (lw < hg) {
+		int pa = quickSortPart_N(num, lw, hg);
+		quickSort_N(num, lw, pa - 1);
+		quickSort_N(num, pa + 1, hg);
+	}
+}
+int quickSortPart_N(int* num, int lw, int hg) {
+	int j;
+	for (j = lw; j <= hg - 1; j++) {
+		if (num[j] < num[hg]) {
+			swap_N(num, j, hg);
+		}
+	}
+	swap_N(num, lw, hg);
+	return lw;
+}
+
+//for Letter
+void quickSort_L(char* let, int lw, int hg) {
+	if (lw < hg) {
+		int pa = quickSortPart_L(let, lw, hg);
+		quickSort_L(let, lw, pa - 1);
+		quickSort_L(let, pa + 1, hg);
+	}
+}
+int quickSortPart_L(char* let, int lw, int hg) {
+	int j;
+	for (j = lw; j <= hg - 1; j++) {
+		if (let[j] < let[hg]) {
+			swap_L(let, j, hg);
+		}
+	}
+	swap_L(let, lw, hg);
+	return lw;
+}
+
+//HeapSort *******************************************
+
+//for Number
+void heapSort_N(int* num, int size) {
+	int i;
+	for (i = size / 2 - 1; i >= 0; i--) {
+		heapSortFy_N(num, size, i);
+	}
+	for (i = size - 1; i >= 0; i--) {
+		swap_N(num, 0, i);
+		heapSortFy_N(num, i, 0);
+	}
+}
+void heapSortFy_N(int* num, int size, int i) {
+	int largest = i;
+	int left = 2 * i + 1;
+	int right = 2 * i + 2;
+
+	if (left < size && num[left] > num[largest]) {
+		largest = left;
+	}
+
+	if (right < size && num[right] > num[largest]) {
+		largest = right;
+	}
+
+	if (largest != i) {
+		swap_N(num, i, largest);
+		heapSortFy_N(num, size, largest);
+	}
+}
+void heapSort_L(char* let, int size) {
+	int i;
+	for (i = size / 2 - 1; i >= 0; i--) {
+		heapSortFy_L(let, size, i);
+	}
+	for (i = size - 1; i >= 0; i--) {
+		swap_L(let, 0, i);
+		heapSortFy_L(let, i, 0);
+	}
+}
+void heapSortFy_L(char* let, int size, int i) {
+	int largest = i;
+	int left = 2 * i + 1;
+	int right = 2 * i + 2;
+
+	if (left < size && let[left] > let[largest]) {
+		largest = left;
+	}
+
+	if (right < size && let[right] > let[largest]) {
+		largest = right;
+	}
+
+	if (largest != i) {
+		swap_L(let, i, largest);
+		heapSortFy_L(let, size, largest);
+	}
+}
+
+
+<<<<<<< HEAD
+
+
+=======
+>>>>>>> 3634bd7196ad1aa547869f18b487fa8f36fb27e9
 //Swap	********************************************
 
 //for Number

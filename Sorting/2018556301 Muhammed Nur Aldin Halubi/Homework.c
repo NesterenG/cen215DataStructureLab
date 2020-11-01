@@ -210,6 +210,120 @@ void printArray(int arr[], int n)
 }
 
 
+void quicksort(int* arr, int left, int right) {
+    int low;
+    int high;
+    int pivot;
+    pivot = left;
+
+
+    if (right > right) {
+        pivot = left;
+        low = left;
+        high = right;
+        while (low < high) {
+            while (arr[low] <= arr[pivot] && low<right && high>low) {
+                low++;
+            }
+            while (arr[high] >= arr[pivot] && high >= left && high >= low) {
+                high--;
+            }
+            if (high > low) {
+                swap(&arr[low], &arr[high]);
+            }
+        }
+
+        swap(&arr[low], &arr[pivot]);
+        quicksort(arr, left, high - 1);
+        quicksort(arr, high + 1, right);
+    }
+}
+void quicksortchar(char* array, char left, char right) {
+    int low;
+    int high;
+    char pivot;
+    pivot = left;
+
+
+    if (right > left) {
+        pivot = left;
+        low = left;
+        high = right;
+        while (low < high) {
+            while (array[low] <= array[pivot] && low<right && high>low) {
+                low++;
+            }
+            while (array[high] >= array[pivot] && high >= left && high >= low) {
+                high--;
+            }
+            if (high > low) {
+                swapChar(&array[low], &array[high]);
+            }
+        }
+
+        swapChar(&array[low], &array[pivot]);
+        quicksortchar(array, left, high - 1);
+        quicksortchar(array, high + 1, right);
+    }
+}
+
+void heapify(int arr[], int n, int i) {
+    int largest = i;
+    int l = 2 * i + 1;
+    int r = 2 * i + 2;
+
+    if (l < n && arr[l] > arr[largest])
+        largest = l;
+
+    if (r < n && arr[r] > arr[largest])
+        largest = r;
+
+    if (largest != i) {
+        swap(&arr[i], &arr[largest]);
+        heapify(arr, n, largest);
+    }
+}
+
+void heapsort(int arr[], int n) {
+    int s, k;
+    for (s = n / 2 - 1; s >= 0; s--)
+        heapify(arr, n, s);
+
+    for (k = n - 1; k > 0; k--) {
+        swap(&arr[0], &arr[k]);
+        heapify(arr, k, 0);
+    }
+}
+
+void heapifychar(char arr[], int n, int i) {
+    int largest = i;
+    int l = 2 * i + 1;
+    int r = 2 * i + 2;
+
+    if (l < n && arr[l] > arr[largest])
+        largest = l;
+
+    if (r < n && arr[r] > arr[largest])
+        largest = r;
+
+    if (largest != i) {
+        swapChar(&arr[i], &arr[largest]);
+        heapifychar(arr, n, largest);
+    }
+}
+
+void heapsortchar(char arr[], int n) {
+    int i, j;
+    for (i = n / 2 - 1; i >= 0; i--)
+        heapifychar(arr, n, i);
+
+    for (j = n - 1; j > 0; j--) {
+        swapChar(&arr[0], &arr[j]);
+        heapifychar(arr, j, 0);
+    }
+}
+
+
 int main() {
     clock_t x;
     x = clock();
@@ -263,6 +377,29 @@ int main() {
     mergeSortChar(name, 0, len - 1);
     printf("%s\n", name);
     printf("%f", (float)x / CLOCKS_PER_SEC);
+
+    x = clock() - x;
+    printf("\n\n");
+
+    printf("quicksort");
+    printf("\n");
+    quicksort(number, 0, size - 1);
+    printArray(number, size);
+    quicksortchar(name, 0, len - 1);
+    printf("%s\n", name);
+    printf("%f", (float)x / CLOCKS_PER_SEC);
+
+    x = clock() - x;
+    printf("\n\n");
+
+    printf("heapsort");
+    printf("\n");
+    heapsort(number, size);
+    printArray(number, size);
+    heapsortchar(name, size);
+    printf("%s\n", name);
+    printf("%f", (float)x / CLOCKS_PER_SEC);
+
 
     return 0;
 }

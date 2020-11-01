@@ -2,7 +2,7 @@
 #include<time.h>
 #include<conio.h>
 
-/*Amine Ceyda Tandoðan
+/*Amine Ceyda TandoÃ°an
   2018555061*/
 void swap(int *a, int *b)
 {
@@ -214,6 +214,121 @@ void selectionSort2(char arr[], int n)
         swap(&arr[minindex], &arr[i]);
     }
 }
+  void heapify(int arr[], int n, int i) {
+    int max = i;
+    int leftChild = 2 * i + 1;
+    int rightChild = 2 * i + 2;
+
+    if (leftChild < n && arr[leftChild] > arr[max])
+      max = leftChild;
+
+    if (rightChild < n && arr[rightChild] > arr[max])
+      max = rightChild;
+
+    if (max != i) {
+      swap(&arr[i], &arr[max]);
+      heapify(arr, n, max);
+    }
+  }
+  void heapify2(char arr[], int n, int i) {
+    int max = i;
+    int leftChild = 2 * i + 1;
+    int rightChild = 2 * i + 2;
+
+    if (leftChild < n && arr[leftChild] > arr[max])
+      max = leftChild;
+
+    if (rightChild < n && arr[rightChild] > arr[max])
+      max = rightChild;
+
+    if (max != i) {
+      swap2(&arr[i], &arr[max]);
+      heapify2(arr, n, max);
+    }
+  }
+
+  void heapSort(int arr[], int n) {
+    for (int i = n / 2 - 1; i >= 0; i--)
+      heapify(arr, n, i);
+
+    for (int i = n - 1; i >= 0; i--) {
+      swap(&arr[0], &arr[i]);
+
+      heapify(arr, i, 0);
+    }
+  }
+    void heapSort2(char arr[], int n) {
+    for (int i = n / 2 - 1; i >= 0; i--)
+      heapify2(arr, n, i);
+
+    for (int i = n - 1; i >= 0; i--) {
+      swap2(&arr[0], &arr[i]);
+
+      heapify2(arr, i, 0);
+    }
+  }
+
+  int partition (int arr[], int low, int high)
+{
+    int pivot = arr[high];
+    int i = (low - 1);
+
+    for (int j = low; j <= high- 1; j++)
+    {
+
+        if (arr[j] < pivot)
+        {
+            i++;
+            swap(&arr[i], &arr[j]);
+        }
+    }
+    swap(&arr[i + 1], &arr[high]);
+    return (i + 1);
+}
+
+
+void quickSort(int arr[], int low, int high)
+{
+    if (low < high)
+    {
+
+        int pi = partition(arr, low, high);
+
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+}
+
+int partition2 (char arr[], int low, int high)
+{
+    int pivot = arr[high];
+    int i = (low - 1);
+
+    for (int j = low; j <= high- 1; j++)
+    {
+
+        if (arr[j] < pivot)
+        {
+            i++;
+            swap2(&arr[i], &arr[j]);
+        }
+    }
+    swap2(&arr[i + 1], &arr[high]);
+    return (i + 1);
+}
+
+
+void quickSort2(char arr[], int low, int high)
+{
+    if (low < high)
+    {
+
+        int pi = partition2(arr, low, high);
+
+        quickSort2(arr, low, pi - 1);
+        quickSort2(arr, pi + 1, high);
+    }
+}
 
 void printArray(int arr[], int size)
 {
@@ -281,5 +396,26 @@ int main()
     double elapsed4 = (double)(stop3 - start3)  / CLOCKS_PER_SEC;
     printf("\nexecution time: %f\n", elapsed4);
 
+      clock_t start4 = clock();
+    heapSort(arr,size1);
+    printf("\n Heap Sort\n");
+    printArray(arr, size1);
+    heapSort2(name,size2);
+    printArray2(name, size2);
+
+ clock_t stop4 = clock();
+    double elapsed5 = (double)(stop4 - start4)  / CLOCKS_PER_SEC;
+    printf("\nexecution time: %f\n", elapsed5);
+
+       clock_t start5 = clock();
+    quickSort(arr,0,size1-1);
+    printf("\n Quick Sort\n");
+    printArray(arr, size1);
+    quickSort2(name,0,size2-1);
+    printArray2(name, size2);
+
+ clock_t stop5 = clock();
+    double elapsed6 = (double)(stop5 - start5)  / CLOCKS_PER_SEC;
+    printf("\nexecution time: %f\n", elapsed6);
     return 0;
 }

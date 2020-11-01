@@ -5,6 +5,7 @@
 void exchange(int* a, int* b);
 void exchange_char(char* a, char*b);
 long current_time();
+void liner();
 
 void show(int Array[],int size);
 void show_char(char Array[],int size);
@@ -24,6 +25,14 @@ void mergesort(int Array[], int left, int right);
 void merge_char(char Array[], int start, int mid, int end);
 void mergesort_char(char Array[], int start, int end);
 
+void quicksort(int Array[], int low, int high);
+void quicksort_char(char Array[],int low,int high);
+
+void heapify(int Array[], int n, int i);
+void heapSort(int Array[], int size);
+
+void heapify_char(char Array[],int n,int i);
+void heapsort_char(char Array[],int size);
 
 long int start_point;
 long int stop_point;
@@ -39,63 +48,103 @@ int main()
     int number_array[number_of_elements];
     Array_copy(school_number,number_array,number_of_elements);
 
-    printf("-------------------------------------\n");
+    liner();
 
     bubblesort(number_array, number_of_elements);
     Array_copy(school_number,number_array,number_of_elements);
 
-    printf("-------------------------------------\n");
+    liner();
 
     selectionsort(number_array,number_of_elements);
     Array_copy(school_number,number_array,number_of_elements);
 
-    printf("-------------------------------------\n");
+    liner();
 
     insertionsort(number_array,number_of_elements);
     Array_copy(school_number,number_array,number_of_elements);
 
-    printf("-------------------------------------\n");
+    liner();
 
     start_point = current_time();
     mergesort(number_array,0,number_of_elements-1);
     stop_point = current_time();
     printf("Mergesort algoritm running time %f\n", ((double)(stop_point - start_point))/ CLOCKS_PER_SEC);
     show(number_array,number_of_elements);
-    printf("\n");
+    Array_copy(school_number,number_array,number_of_elements);
 
-    printf("-------------------------------------\n");
+    liner();
+
+    start_point = current_time();
+    quicksort(number_array, 0, number_of_elements-1);
+    stop_point = current_time();
+    printf("Quicksort algoritm running time %f\n", ((double)(stop_point - start_point))/ CLOCKS_PER_SEC);
+    show(number_array, number_of_elements);
+    Array_copy(school_number,number_array,number_of_elements);
+
+    liner();
+
+    start_point = current_time();
+    heapSort(number_array, number_of_elements);
+    stop_point = current_time();
+    printf("Heapsort algoritm running time %f\n", ((double)(stop_point - start_point))/ CLOCKS_PER_SEC);
+    show(number_array, number_of_elements);
+
+    liner();
 
 
     char name[] = "AhmetKORKMAZ"; 
     char name_array[sizeof(name)];
     Array_copy_char(name,name_array,sizeof(name));
 
-    printf("-------------------------------------\n");
+    liner();
 
     bubblesort_char(name_array, strlen(name));
     Array_copy_char(name,name_array,sizeof(name));
 
-    printf("-------------------------------------\n");
+    liner();
 
     selectionsort_char(name_array,strlen(name));
     Array_copy_char(name,name_array,sizeof(name));
 
-    printf("-------------------------------------\n");
+    liner();
 
     insertionsort_char(name_array,strlen(name));
     Array_copy_char(name,name_array,sizeof(name));
 
-    printf("-------------------------------------\n");
+    liner();
 
     start_point = current_time();
     mergesort_char(name_array,0,strlen(name_array)-1);
     stop_point = current_time();
     printf("Mergesort algoritm running time %f\n", ((double)(stop_point - start_point))/ CLOCKS_PER_SEC);
     show_char(name_array,strlen(name_array));
-    printf("\n");
+    Array_copy_char(name,name_array,sizeof(name));
 
-    printf("-------------------------------------\n");
+    liner();
+
+    start_point = current_time();
+    quicksort_char(name_array, 0, strlen(name_array)-1);
+    stop_point = current_time();
+    printf("QuickSort algoritm running time %f\n", ((double)(stop_point - start_point))/ CLOCKS_PER_SEC);
+    show_char(name_array, strlen(name_array));
+    Array_copy_char("AHMETKORKMAZ",name_array,sizeof(name));
+
+    liner();
+    
+    start_point = current_time();
+    heapsort_char(name_array,strlen(name_array));
+    stop_point = current_time();
+    printf("Heapsort algoritm running time %f\n", ((double)(stop_point - start_point))/ CLOCKS_PER_SEC);
+    show_char(name_array, sizeof(name));
+
+    liner();
 }
+
+void liner()
+{
+    printf("\n-------------------------------------\n");
+}
+
 void Array_copy(int Array[],int Array2[],int size)
 {
     for(int i = 0;i<size;i++)
@@ -160,7 +209,6 @@ void bubblesort(int bubblesort_array[], int number_of_elements)
     stop_point = current_time();
     printf("Bubblesort algoritm running time %f\n", ((double)(stop_point - start_point))/ CLOCKS_PER_SEC);
     show(bubblesort_array,number_of_elements);
-    printf("\n");
 }
 
 void bubblesort_char(char Array[],int number_of_elements)
@@ -185,7 +233,6 @@ void bubblesort_char(char Array[],int number_of_elements)
     stop_point = current_time();
     printf("Bubblesort algoritm running time %f\n", ((double)(stop_point - start_point))/ CLOCKS_PER_SEC);
     show_char(Array, number_of_elements);
-    printf("\n");
 }
 
 void selectionsort(int Array[],int number_of_elements)
@@ -207,8 +254,6 @@ void selectionsort(int Array[],int number_of_elements)
     printf("Selectionsort algoritm running time %f\n", ((double)(stop_point - start_point))/ CLOCKS_PER_SEC);
 
     show(Array, number_of_elements);
-    printf("\n");
-  
 }
 
 void selectionsort_char(char Array[],int number_of_elements)
@@ -237,7 +282,6 @@ void selectionsort_char(char Array[],int number_of_elements)
     stop_point = current_time();
     printf("Selectionsort algoritm running time %f\n", ((double)(stop_point - start_point))/ CLOCKS_PER_SEC);
     show_char(Array, number_of_elements);
-    printf("\n");
 }
 
 void insertionsort(int Array[],int number_of_elements)
@@ -265,8 +309,6 @@ void insertionsort(int Array[],int number_of_elements)
     stop_point = current_time();
     printf("Insertionsort algoritm running time %f\n", ((double)(stop_point - start_point))/ CLOCKS_PER_SEC);
     show(sorted,number_of_elements);
-    printf("\n");
-    
 }
 
 void insertionsort_char(char Array[], int number_of_elements)
@@ -304,7 +346,6 @@ void insertionsort_char(char Array[], int number_of_elements)
     stop_point = current_time();
     printf("Insertionsort algoritm running time %f\n", ((double)(stop_point - start_point))/ CLOCKS_PER_SEC);
     show_char(sorted,number_of_elements);
-    printf("\n");
 }
 
 void merge(int arr[], int left, int m, int right) 
@@ -417,4 +458,117 @@ void mergesort_char(char Array[], int start, int end)
 		mergesort_char(Array, mid+1, end);
 		merge_char(Array, start, mid, end);
 	}
+}
+
+void quicksort(int Array[], int low, int high) 
+{ 
+    if(low < high) 
+    { 
+        int pivot = low - 1;
+  
+        for(int j = low; j <= high - 1; j++) 
+        { 
+            if(Array[j] < Array[high]) 
+            { 
+                pivot++;
+                exchange(&Array[pivot], &Array[j]); 
+            } 
+        } 
+        exchange(&Array[pivot + 1], &Array[high]); 
+        pivot++;
+
+        quicksort(Array, low, pivot - 1); 
+        quicksort(Array, pivot + 1, high); 
+    } 
+}
+
+void quicksort_char(char Array[],int low,int high)
+{
+    if( low < high)
+    {
+        int pivot = low - 1;
+        for(int j = low; j <= high - 1;j++)
+        {
+            int minus = 0;
+            if(Array[j] > 96)
+                minus = 32;
+
+            int minus2 = 0;
+            if(Array[high] > 96)
+                minus2 = 32;
+
+            if(Array[j] - minus < Array[high] - minus2)
+            {
+                pivot++;
+                exchange_char(&Array[pivot], &Array[j]);
+            }
+        }
+        exchange_char(&Array[pivot+1], &Array[high]);
+        pivot++;
+
+        quicksort_char(Array, low, pivot - 1);
+        quicksort_char(Array, pivot + 1, high);
+    }
+}
+
+void heapify(int Array[], int n, int i) 
+{ 
+    int largest = i;
+    int left_part = 2*i + 1; 
+    int right_part = 2*i + 2; 
+ 
+    if(left_part < n && Array[left_part] > Array[largest]) 
+        largest = left_part; 
+
+    if(right_part < n && Array[right_part] > Array[largest]) 
+        largest = right_part; 
+   
+    if(largest != i) 
+    { 
+        exchange(&Array[i], &Array[largest]);  
+        heapify(Array, n, largest); 
+    } 
+} 
+
+void heapSort(int Array[], int size) 
+{ 
+    for(int i = size/2 - 1; i >= 0; i--) 
+        heapify(Array, size, i); 
+  
+    for(int i = size - 1; i > 0; i--) 
+    { 
+        exchange(&Array[0], &Array[i]); 
+        heapify(Array, i, 0); 
+    } 
+}
+
+void heapify_char(char Array[],int n,int i)
+{
+    int largest = i;
+    int left_part = 2*i + 1;
+    int right_part = 2*i + 2;
+
+    if(left_part < n && Array[left_part] >= Array[largest] )
+        largest = left_part;
+    
+    if(right_part < n && Array[right_part] > Array[largest])
+        largest = right_part;
+    
+    if(largest != i)
+    {
+        exchange_char(&Array[i], &Array[largest]);
+        heapify_char(Array, n, largest);
+    }
+}
+
+void heapsort_char(char Array[], int size)
+{
+    for(int i = size/2 - 1; i >= 0; i--)
+        heapify_char(Array, size, i);
+    
+    for(int i = size - 1; i > 0; i--)
+    {
+        exchange_char(&Array[0], &Array[i]);
+        heapify_char(Array, i, 0);
+    }
 }

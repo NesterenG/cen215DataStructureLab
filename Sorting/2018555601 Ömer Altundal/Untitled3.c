@@ -228,6 +228,145 @@ void merge_sort_for_name(char arr[], int l, int r)
     } 
 } 
 
+void swap(int* a, int* b) 
+{ 
+    int t = *a; 
+    *a = *b; 
+    *b = t; 
+} 
+  
+
+int partition (int arr[], int low, int high) 
+{ 
+    int pivot = arr[high];   
+    int i = (low - 1);   
+  	int j=low;
+    for (j; j <= high- 1; j++) 
+    { 
+  
+        if (arr[j] < pivot) 
+        { 
+            i++;    
+            swap(&arr[i], &arr[j]); 
+        } 
+    } 
+    swap(&arr[i + 1], &arr[high]); 
+    return (i + 1); 
+} 
+  
+void quick_sort_for_number(int arr[], int low, int high) 
+{ 
+    if (low < high) 
+    { 
+        int pi = partition(arr, low, high); 
+		quick_sort_for_number(arr, low, pi - 1); 
+        quick_sort_for_number(arr, pi + 1, high); 
+    } 
+} 
+void swap_name(char* a, char* b) 
+{ 
+    char t = *a; 
+    *a = *b; 
+    *b = t; 
+} 
+  
+
+
+int partition_name (char arr[], int low, int high) 
+{ 
+    char pivot = arr[high];   
+    int i = (low - 1);   
+  	int j=low;
+    for (j; j <= high- 1; j++) 
+    { 
+  
+        if (arr[j] < pivot) 
+        { 
+            i++;    
+            swap_name(&arr[i], &arr[j]); 
+        } 
+    } 
+    swap_name(&arr[i + 1], &arr[high]); 
+    return (i + 1); 
+} 
+  
+void quick_sort_for_name(char arr[], int low, int high) 
+{ 
+    if (low < high) 
+    { 
+        int pi = partition_name(arr, low, high); 
+        
+		quick_sort_for_name(arr, low, pi - 1); 
+        quick_sort_for_name(arr, pi + 1, high); 
+    } 
+} 
+
+void heapify(int arr[], int n, int i) 
+{ 
+    int largest = i;  
+    int l = 2*i + 1; 
+    int r = 2*i + 2; 
+
+    if (l < n && arr[l] > arr[largest]) 
+        largest = l; 
+  
+    if (r < n && arr[r] > arr[largest]) 
+        largest = r; 
+  
+    if (largest != i) 
+    { 
+        swap(&arr[i], &arr[largest]); 
+  
+        heapify(arr, n, largest); 
+    } 
+} 
+  
+void heap_sort_for_number(int arr[], int n) 
+{ 
+	int i;
+    for ( i = n / 2 - 1; i >= 0; i--) 
+        heapify(arr, n, i); 
+  	int j;
+    for (j=n-1; j>0; j--) 
+    { 
+        swap(&arr[0], &arr[j]); 
+        heapify(arr, j, 0); 
+    } 
+} 
+
+void heapify_name(char arr[], int n, int i) 
+{ 
+    int largest = i;  
+    int l = 2*i + 1; 
+    int r = 2*i + 2; 
+
+    if (l < n && arr[l] > arr[largest]) 
+        largest = l; 
+  
+    if (r < n && arr[r] > arr[largest]) 
+        largest = r; 
+  
+    if (largest != i) 
+    { 
+        swap_name(&arr[i], &arr[largest]); 
+  
+        heapify_name(arr, n, largest); 
+    } 
+} 
+  
+void heap_sort_for_name(char arr[], int n) 
+{ 
+	int i ;
+    for (i = n / 2 - 1; i >= 0; i--) 
+        heapify_name(arr, n, i); 
+  	int j;
+    for (j=n-1; j>0; j--) 
+    { 
+        swap_name(&arr[0],&arr[j]); 
+        heapify_name(arr, j, 0); 
+    } 
+} 
+
 
 int main()
 {
@@ -273,6 +412,29 @@ int main()
 	print_func_for_char(my_name,my_name_size);
 	t4=clock()-t4;
 	printf("\nMerge sort worked %f seconds.",((float)t4)/CLOCKS_PER_SEC); 
+	
+
+	clock_t t5;
+	t5=clock();
+	quick_sort_for_number(my_number,0,my_number_size-1);
+	printf("\n\n\nMy number sorted with quick sort:");
+	print_func_for_num(my_number,my_number_size);
+	quick_sort_for_name(my_name,0,my_name_size-1);
+	printf("\nMy name sorted with quick sort:");
+	print_func_for_char(my_name,my_name_size);
+	t5=clock()-t5;
+	printf("\nQuick sort worked %f seconds.",((float)t5/CLOCKS_PER_SEC));
+	
+	clock_t t6;
+	t6=clock();
+	heap_sort_for_number(my_number,my_number_size);
+	printf("\n\n\nMy number is sorted with heap sort:");
+	print_func_for_num(my_number,my_number_size);	
+	heap_sort_for_name(my_name,my_name_size);
+	printf("\nMy name sorted with heap sort:");
+	print_func_for_char(my_name,my_name_size);
+	t6=clock()-t6;
+	printf("\nHeap sort worked %f seconds.",((float)t6/CLOCKS_PER_SEC));
 	
 	return 0;
 }
