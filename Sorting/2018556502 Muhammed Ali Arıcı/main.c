@@ -252,6 +252,128 @@ void MergeSortChar(char arr[], int l, int r)
     }
 }
 
+// QuickSort
+int Partition(int arr[], int low, int high)
+{
+    int pivot = arr[high];
+    int i = (low - 1);     
+
+    for (int j = low; j <= high - 1; j++)
+    {
+
+        if (arr[j] < pivot)
+        {
+            i++; 
+            swap(&arr[i], &arr[j]);
+        }
+    }
+    swap(&arr[i + 1], &arr[high]);
+    return (i + 1);
+}
+
+void QuickSort(int arr[], int low, int high)
+{
+    if (low < high)
+    {
+        int pi = Partition(arr, low, high);
+        QuickSort(arr, low, pi - 1);
+        QuickSort(arr, pi + 1, high);
+    }
+}
+
+// Quick Sort for Char
+int PartitionForChar(char arr[], int low, int high)
+{
+    int pivot = arr[high];
+    int i = (low - 1);
+
+    for (int j = low; j <= high - 1; j++)
+    {
+
+        if (arr[j] < pivot)
+        {
+            i++;
+            swapChar(&arr[i], &arr[j]);
+        }
+    }
+    swapChar(&arr[i + 1], &arr[high]);
+    return (i + 1);
+}
+
+void QuickSortForChar(char arr[], int low, int high)
+{
+    if (low < high)
+    {
+        int pi = PartitionForChar(arr, low, high);
+        QuickSortForChar(arr, low, pi - 1);
+        QuickSortForChar(arr, pi + 1, high);
+    }
+}
+
+//Head Sort
+void Heapify(int arr[], int n, int i)
+{
+    int largest = i;
+    int l = 2 * i + 1;
+    int r = 2 * i + 2;
+
+    if (l < n && arr[l] > arr[largest])
+        largest = l;
+
+    if (r < n && arr[r] > arr[largest])
+        largest = r;
+
+    if (largest != i)
+    {
+        swap(&arr[i], &arr[largest]);
+        Heapify(arr, n, largest);
+    }
+}
+
+void HeapSort(int arr[], int n)
+{
+    for (int i = n / 2 - 1; i >= 0; i--)
+        Heapify(arr, n, i);
+
+    for (int i = n - 1; i > 0; i--)
+    {
+        swap(&arr[0], &arr[i]);
+        Heapify(arr, i, 0);
+    }
+}
+
+// Heap Sor For Char
+void HeapifyForChar(char arr[], int n, int i)
+{
+    int largest = i;
+    int l = 2 * i + 1;
+    int r = 2 * i + 2;
+
+    if (l < n && arr[l] > arr[largest])
+        largest = l;
+
+    if (r < n && arr[r] > arr[largest])
+        largest = r;
+
+    if (largest != i)
+    {
+        swapChar(&arr[i], &arr[largest]);
+        HeapifyForChar(arr, n, largest);
+    }
+}
+
+void HeapSortForChar(char arr[], int n)
+{
+    for (int i = n / 2 - 1; i >= 0; i--)
+        HeapifyForChar(arr, n, i);
+
+    for (int i = n - 1; i > 0; i--)
+    {
+        swapChar(&arr[0], &arr[i]);
+        HeapifyForChar(arr, i, 0);
+    }
+}
+
 int main() {
     
     clock_t time;
@@ -336,6 +458,46 @@ int main() {
     printf("Sorted Name:");
     printf("%s\n", Name_4);
     printf("Merge char sort time: %f\n", ((double)time) / CLOCKS_PER_SEC);
+    printf("\n\n");
+
+    // Quick Sorts
+    int No_5[] = {2, 0, 1, 8, 5, 5, 6, 5, 0, 2};
+    int No_size_5 = sizeof(No) / sizeof(No[0]);
+    char Name_5[] = "muhammed ali arici";
+    int charSize_5 = strlen(Name);
+
+    time = clock();
+    QuickSort(No_5, 0, No_size_5 - 1);
+    time = clock() - time;
+    printf("Sorted No: ");
+    printArray(No_5, No_size_5);
+    printf("\n");
+    printf("Quick sort time: %f\n", ((double)time) / CLOCKS_PER_SEC);
+    QuickSortForChar(Name_5, 0, charSize_5 - 1);
+    time = clock() - time;
+    printf("Sorted Name:");
+    printf("%s\n", Name_5);
+    printf("Quick char sort time: %f\n", ((double)time) / CLOCKS_PER_SEC);
+    printf("\n\n");
+
+    // Heap Sorts
+    int No_6[] = {2, 0, 1, 8, 5, 5, 6, 5, 0, 2};
+    int No_size_6 = sizeof(No) / sizeof(No[0]);
+    char Name_6[] = "muhammed ali arici";
+    int charSize_6 = strlen(Name);
+
+    time = clock();
+    HeapSort(No_6, No_size_6);
+    time = clock() - time;
+    printf("Sorted No: ");
+    printArray(No_6, No_size_6);
+    printf("\n");
+    printf("Heap sort time: %f\n", ((double)time) / CLOCKS_PER_SEC);
+    HeapSortForChar(Name_6, charSize_6);
+    time = clock() - time;
+    printf("Sorted Name:");
+    printf("%s\n", Name_6);
+    printf("Heap char sort time: %f\n", ((double)time) / CLOCKS_PER_SEC);
 
     return 0;
 }

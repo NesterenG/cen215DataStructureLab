@@ -3,6 +3,9 @@
 #include<time.h>
 #include<string.h>
 
+//Melissa Coskun 2019555301//
+
+
 //putting the name in the previous order//
 void undoname(char arr[], int size) {
 	char m[] = " Melissa Coskun ";
@@ -212,6 +215,116 @@ void functionprint(int arr[], int size){
 	}
 }
 
+//Quick Sort For Number//
+void quickSort(int* array, int left, int right) {
+	int k, j, q, temp;
+	k = left;
+	j = right;
+	q = array[(left + right) / 2];
+
+	do {
+		while ((array[k] < q) && (k < right))
+			k++;
+		while ((array[j] > q) && (j > left))
+			j--;
+		if (k <= j) {
+			swap(&array[k], &array[j]);
+			k++;
+			j--;
+		}
+	} while (k <= j);
+
+	if (left < j)
+		quickSort(array, left, j);
+	if (k < right)
+		quickSort(array, k, right);
+
+}
+
+
+//Quick Sort For Name//
+void quickSortchar(char arr[], int left, int right) {
+	int k, j, q, temp;
+	k = left;
+	j = right;
+	q = arr[(left + right) / 2];
+
+	do {
+		while ((arr[k] < q) && (k < right))
+			k++;
+		while ((arr[j] > q) && (j > left))
+			j--;
+		if (k <= j) {
+			swapchar(&arr[k], &arr[j]);
+			k++;
+			j--;
+		}
+	} while (k <= j);
+
+	if (left < j)
+		quickSortchar(arr, left, j);
+	if (k < right)
+		quickSortchar(arr, k, right);
+
+}
+//Heap Sort For Number//
+void heapify(int arr[], int n, int i) {
+	int largest = i;
+	int l = (2 * i) + 1;//left child//
+	int r = (2 * i) + 2;//right child//
+	if (arr[l] > arr[largest] && l < n)
+		largest = l;
+	if (arr[r] > arr[largest] && r < n)
+		largest = r;
+
+	if (largest != i) {
+		swap(&arr[i], &arr[largest]);
+		heapify(arr, n, largest);
+	}
+
+
+}
+void heapsort(int arr[], int n) {
+	int i, j;
+	for (i = (n / 2) - 1; i >= 0; i--)
+		heapify(arr, n, i);
+	for (j = n - 1; j > 0; j--) {
+		swap(&arr[0], &arr[j]);
+		heapify(arr, j, 0);
+	}
+
+
+}
+//Heap Sort For Name
+
+void heapifychar(char name[16], int n, int i) {
+	int largest = i;
+	int l = (2 * i) + 1;//left child//
+	int r = (2 * i) + 2;//right child//
+	if (name[l] > name[largest] && l < n)
+		largest = l;
+	if (name[r] > name[largest] && r < n)
+		largest = r;
+
+	if (largest != i) {
+		swapchar(&name[i], &name[largest]);
+		heapifychar(name, n, largest);
+	}
+
+
+}
+void heapsortchar(char name[16], int n) {
+	int i, j;
+	for (i = (n / 2) - 1; i >= 0; i--)
+		heapifychar(name, n, i);
+	for (j = n - 1; j > 0; j--) {
+		swapchar(&name[0], &name[j]);
+		heapifychar(name, j, 0);
+	}
+
+
+}
+
 
 int main() {
 
@@ -273,7 +386,8 @@ int main() {
 	undoname(name, charsize);
 	undoarray(&a, n1);
 
-	printf("\n\nicOrginal Array:  ");  functionprint(a, n1);
+	printf("\n\nOrginal Array:  ");  functionprint(a, n1);
+
 	printf("\nSelection Sort:    "); start = clock(); selectionsort(a, n1);
 	end = clock();
 	totaltime = (double)(end - start) / CLOCKS_PER_SEC;
@@ -288,6 +402,43 @@ int main() {
 	printf("\nSorted Name for selection:%s", name);
 	printf("\nExecution Time for selectionsort name:%f\n", totaltime);
 	undoname(name, charsize);
-	
+
+	printf("\n\nOrginal Array:  ");  functionprint(a, n1);
+	printf("\nQuick Sort:    "); 
+	start = clock();
+	quickSort(a, 0, n1 - 1);
+	end = clock();
+	totaltime = (double)(end - start) / CLOCKS_PER_SEC;
+	functionprint(a, n1);
+	printf("\nExecution Time for quicksort number:%f", totaltime);
+	undoarray(&a, n1);
+
+	printf("\n\nOrginal Name:%s", name);
+	start = clock(); quickSortchar(name, 0, charsize - 1);
+	end = clock();
+	totaltime = (double)(end - start) / CLOCKS_PER_SEC;
+	printf("\nSorted Name for quicksort:%s", name);
+	printf("\nExecution Time for Quicksort name:%f\n", totaltime);
+	undoname(name, charsize);
+
+
+	printf("\n\nOrginal Array:  ");  functionprint(a, n1);
+	printf("\nHeap Sort:    ");
+	start = clock();
+	heapsort(a, n1);
+	end = clock();
+	totaltime = (double)(end - start) / CLOCKS_PER_SEC;
+	functionprint(a, n1);
+	printf("\nExecution Time for heapsort number:%f", totaltime);
+	undoarray(&a, n1);
+
+	printf("\n\nOrginal Name:%s", name);
+	start = clock();
+	heapsortchar(name, charsize);
+	end = clock();
+	totaltime = (double)(end - start) / CLOCKS_PER_SEC;
+	printf("\nSorted Name for heapsort:%s", name);
+	printf("\nExecution Time for HeapSort name:%f\n", totaltime);
+	undoname(name, charsize);
 
 }

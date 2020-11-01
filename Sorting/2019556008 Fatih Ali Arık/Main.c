@@ -94,6 +94,108 @@ void SelectionSort_ch(char array[], int size)
 	}
 }
 
+
+/* HeapSort */
+void Heapify(int num[], int size, int i) {
+	int largest = i;
+	int l = 2 * i + 1;
+	int r = 2 * i + 2;
+	if (num[l] > num[largest] && l < size)
+		largest = l;
+	if (num[r] > num[largest] && r < size)
+		largest = r;
+	if (largest != i) {
+
+		swap(&num[i], &num[largest]);
+		Heapify(num, size, largest);
+	}
+}
+void HeapSort(int num[], int size) {
+	int i;
+	for (i = size / 2 - 1; i >= 0; i--)
+		Heapify(num, size, i);
+	for (i = size - 1; i > 0; i--) {
+		swap(&num[0], &num[i]);
+		Heapify(num, i, 0);
+	}
+
+}
+void HeapifyChar(char name[], int size, int i) {
+	int largest = i;
+	int l = 2 * i + 1;
+	int r = 2 * i + 2;
+	if (name[l] > name[largest] && l < size)
+		largest = l;
+	if (name[r] > name[largest] && r < size)
+		largest = r;
+	if (largest != i) {
+
+		swap_ch(&name[i], &name[largest]);
+		HeapifyChar(name, size, largest);
+	}
+}
+void HeapSort_Ch(char name[], int size) {
+	int i;
+	for (i = size / 2 - 1; i >= 0; i--)
+		HeapifyChar(name, size, i);
+	for (i = size - 1; i > 0; i--) {
+		swap_ch(&name[0], &name[i]);
+		HeapifyChar(name, i, 0);
+	}
+}
+/* Quick Sort */
+int QuickSort(int num[], int low, int high)
+{
+	int pivot = num[high];
+	int i = (low - 1);
+	int j;
+	for (j = low; j <= high - 1; j++)
+	{
+		if (num[j] <= pivot)
+		{
+			i++;
+			swap(&num[i], &num[j]);
+		}
+	}
+	swap(&num[i + 1], &num[high]);
+	return (i + 1);
+}
+void quickSort(int num[], int low, int high)
+{
+	if (low < high)
+	{
+		int pi = QuickSort(num, low, high);
+		quickSort(num, low, pi - 1);
+		quickSort(num, pi + 1, high);
+	}
+}
+
+int QuickSortChar(char name[], int low, int high)
+{
+	int pivot = name[high];
+	int i = (low - 1);
+	int j;
+	for (j = low; j <= high - 1; j++)
+	{
+		if (name[j] <= pivot)
+		{
+			i++;
+			swap_ch(&name[i], &name[j]);
+		}
+	}
+	swap_ch(&name[i + 1], &name[high]);
+	return (i + 1);
+}
+void quickSort_Ch(char name[], int low, int high)
+{
+	if (low < high)
+	{
+		int pi = QuickSortChar(name, low, high);
+		quickSort_Ch(name, low, pi - 1);
+		quickSort_Ch(name, pi + 1, high);
+	}
+}
+
 //Merge Sort 
 void merge(int arr[], int l, int m, int r)
 {
@@ -324,7 +426,49 @@ int main(int argc, char const* argv[])
 	timeresult = (double)(c2 - c1) / CLOCKS_PER_SEC;
 	printf("Elapsed Time = %f\n", timeresult);
 	printf("Result of MergeSort\n\n\n");
-	//end of bubblesort
+	//end of mergesort
+
+	//HeapSort
+	/* timer */
+	c1 = clock();
+	HeapSort(num,size);
+	/* timer */
+	printArray(num, size);
+	c2 = clock();
+	timeresult = (double)(c2 - c1) / CLOCKS_PER_SEC;
+	printf("Elapsed Time = %f\n", timeresult);
+	c1 = clock();
+	HeapSort_Ch(name,sizename);
+	/* timer */
+	printArray_ch(name, sizename);
+	c2 = clock();
+	timeresult = (double)(c2 - c1) / CLOCKS_PER_SEC;
+	printf("Elapsed Time = %f\n", timeresult);
+	printf("Result of HeapSort\n\n\n");
+	//end of HeapSort
+
+	//quick sort
+	/* timer */
+	c1 = clock();
+	quickSort(num, 0, size - 1);
+	/* timer */
+	printArray(num, size);
+	c2 = clock();
+	timeresult = (double)(c2 - c1) / CLOCKS_PER_SEC;
+	printf("Elapsed Time = %f\n", timeresult);
+	c1 = clock();
+	quickSort_Ch(name, 0, sizename - 1);
+	/* timer */
+	printArray_ch(name, sizename);
+	c2 = clock();
+	timeresult = (double)(c2 - c1) / CLOCKS_PER_SEC;
+	printf("Elapsed Time = %f\n", timeresult);
+	printf("Result of QuickSort\n\n\n");
+	//end of quicksort
+
+	
+
+	
 	
 	printf("2019556008-Fatih Ali ARIK");
 	return 0;

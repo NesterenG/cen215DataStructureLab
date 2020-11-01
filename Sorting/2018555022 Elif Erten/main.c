@@ -209,7 +209,127 @@ void merge_sort_char(char arr[], int x, int y)
         merge_char(arr, x, m, y);
     }
 }
+//Quick sort
+int partition(int arr[], int low, int high)
+{
+  int pivot = arr[high];
+  int i = (low - 1);
 
+  for (int j = low; j <= high - 1; j++)
+  {
+    if (arr[j] < pivot)
+    {
+      i++;
+      swap(&arr[i], &arr[j]);
+    }
+  }
+  swap(&arr[i + 1], &arr[high]);
+  return (i + 1);
+}
+
+void quick_sort(int arr[], int low, int high)
+{
+  if (low < high)
+  {
+    int pi = partition(arr, low, high);
+
+    quick_sort(arr, low, pi - 1);
+      quick_sort(arr, pi + 1, high);
+  }
+}
+char partition_char(char arr[], int low, int high)
+{
+  int pivot = arr[high];
+  int i = (low - 1);
+  for (int j = low; j <= high - 1; j++)
+  {
+    if (arr[j] < pivot)
+    {
+      i++;
+      swap_char(&arr[i], &arr[j]);
+    }
+  }
+    swap_char(&arr[i + 1], &arr[high]);
+  return (i + 1);
+}
+void quick_sort_char(char arr[], int low, int high)
+{
+  if (low < high)
+  {
+    int pIndex = partition_char(arr, low, high);
+
+    quick_sort_char(arr, low, pIndex - 1);
+    quick_sort_char(arr, pIndex + 1, high);
+  }
+}
+
+void heap(int arr[], int n, int i)
+{
+  int largest = i;
+  int l = 2 * i + 1;
+  int r = 2 * i + 2;
+
+  if (l < n && arr[l] > arr[largest])
+    largest = l;
+
+  if (r < n && arr[r] > arr[largest])
+    largest = r;
+
+  if (largest != i)
+  {
+    swap(&arr[i], &arr[largest]);
+    heap(arr, n, largest);
+  }
+}
+
+void heap_sort(int arr[], int n)
+{
+  int i, j;
+  for (i = n / 2 - 1; i >= 0; i--)
+  {
+    heap(arr, n, i);
+  }
+
+  for (j = n - 1; j > 0; j--)
+  {
+    swap(&arr[0], &arr[j]);
+    heap(arr, j, 0);
+  }
+}
+
+void heap_char(char arr[], int n, int i)
+{
+  int largest = i;
+  int l = 2 * i + 1;
+  int r = 2 * i + 2;
+
+  if (l < n && arr[l] > arr[largest])
+    largest = l;
+
+  if (r < n && arr[r] > arr[largest])
+    largest = r;
+
+  if (largest != i)
+  {
+      swap_char(&arr[i], &arr[largest]);
+      heap_char(arr, n, largest);
+  }
+}
+
+void heap_sort_char(char arr[], int n)
+{
+  int i, j;
+  for (i = n / 2 - 1; i >= 0; i--)
+  {
+      heap_char(arr, n, i);
+  }
+
+  for (j = n - 1; j > 0; j--)
+  {
+      swap_char(&arr[0], &arr[j]);
+      heap_char(arr, j, 0);
+  }
+}
 int main() {
  
     printf("NAME AND SURNAME = ELİF NUMBER = 2018555022\n\n");
@@ -271,6 +391,29 @@ int main() {
     zaman1 = clock() - zaman1;
     printf("%s\n", name);
     printf("merge char sort time: %f\n", ((double)zaman1) / CLOCKS_PER_SEC);
+    
+    //QUİCK SORT
+    
+    printf("QUİCK SORT\n");
+    quick_sort(ogrenci_no, 0, n - 1);
+    zaman1 = clock()-zaman1;
+    printArray(ogrenci_no, n);
+    printf("quick sort  time: %f\n", (double)zaman1 / CLOCKS_PER_SEC);
+    quick_sort_char(name, 0, n-1 );
+    zaman1 = clock() - zaman1;
+    printf("Sorted char       : %s\n", name);
+    printf("quick char sort time: %f\n", (double)zaman1 / CLOCKS_PER_SEC);
+     
+    // Heap Sort
+    printf("HEAP SORT\n");
+    heap_sort(ogrenci_no, n);
+    zaman1 = clock()-zaman1;
+    printArray(ogrenci_no, n);
+    printf("Heap sort  time: %f\n", (double)zaman1 / CLOCKS_PER_SEC);
+    heap_sort_char(name, n);
+    zaman1 = clock()-zaman1;
+    printf("Sorted char     : %s\n", name);
+    printf("Heap char  time: %f\n", (double)zaman1 / CLOCKS_PER_SEC);
 
     return 0;
 }
